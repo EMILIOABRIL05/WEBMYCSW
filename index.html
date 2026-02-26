@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css">
@@ -33,19 +35,25 @@
 
     <style>
         /* Reset y Scroll suave */
-        html { scroll-behavior: smooth; }
-        body { background-color: #050505; color: white; }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #050505;
+            color: white;
+        }
 
         /* --- CORRECCIONES DE COLOR PARA HOVER.CSS --- */
         /* Cambia el color celeste/azul por Verde Razer en animaciones de fondo */
-        .hvr-sweep-to-right:before, 
+        .hvr-sweep-to-right:before,
         .hvr-bounce-to-right:before,
         .hvr-shutter-out-horizontal:before {
             background: #44d62c !important;
         }
 
         /* Texto negro cuando el fondo se vuelve verde */
-        .hvr-sweep-to-right:hover, 
+        .hvr-sweep-to-right:hover,
         .hvr-bounce-to-right:hover,
         .hvr-shutter-out-horizontal:hover {
             color: #000000 !important;
@@ -62,6 +70,7 @@
             border: 1px solid #44d62c;
             transition: all 0.3s ease;
         }
+
         .btn-razer:hover {
             box-shadow: 0 0 20px rgba(68, 214, 44, 0.6);
         }
@@ -72,6 +81,7 @@
         }
     </style>
 </head>
+
 <body class="font-sans">
 
     <nav class="bg-black/95 border-b border-razerGreen/20 sticky top-0 z-50 backdrop-blur-md">
@@ -82,13 +92,18 @@
 
             <ul class="hidden md:flex space-x-8 font-syncopate text-[10px] uppercase tracking-[0.2em]">
                 <li><a href="index.html" class="hvr-underline-from-center py-2 text-razerGreen">Inicio</a></li>
-                <li><a href="pages/juegos.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Minijuegos</a></li>
-                <li><a href="pages/conversores.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Conversores</a></li>
-                <li><a href="pages/calculadoras.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Calculadoras</a></li>
+                <li><a href="./paginas/pagina1.html"
+                        class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Minijuegos / PML</a>
+                </li>
+                <li><a href="pages/conversores.html"
+                        class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Conversores</a></li>
+                <li><a href="pages/calculadoras.html"
+                        class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Calculadoras</a></li>
             </ul>
 
             <div class="hidden md:block">
-                <a href="#equipo" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase tracking-widest">
+                <a href="#equipo"
+                    class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase tracking-widest">
                     Ver Equipo
                 </a>
             </div>
@@ -96,37 +111,155 @@
     </nav>
 
     <header class="relative h-[80vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-        <div class="absolute w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-razerGreen/10 via-transparent to-transparent opacity-50"></div>
+        <div
+            class="absolute w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-razerGreen/10 via-transparent to-transparent opacity-50">
+        </div>
 
-        <h1 class="font-syncopate text-4xl md:text-7xl font-bold mb-6 tracking-tighter razer-txt-glow" data-aos="zoom-in">
+        <h1 class="font-syncopate text-4xl md:text-7xl font-bold mb-6 tracking-tighter razer-txt-glow"
+            data-aos="zoom-in">
             COLECCIÓN <span class="text-razerGreen">RAZER NIKO</span>
         </h1>
-        <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl mb-10 uppercase tracking-[0.3em] font-sans" data-aos="fade-up" data-aos-delay="200">
+        <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl mb-10 uppercase tracking-[0.3em] font-sans"
+            data-aos="fade-up" data-aos-delay="200">
             Siente el fuego del código
         </p>
         <div data-aos="fade-up" data-aos-delay="400">
-            <button class="hvr-bounce-to-right btn-razer font-syncopate text-xs tracking-[0.2em] px-10 py-4 uppercase font-bold">
+            <button
+                class="hvr-bounce-to-right btn-razer font-syncopate text-xs tracking-[0.2em] px-10 py-4 uppercase font-bold">
                 Más Información >
             </button>
         </div>
     </header>
 
     <main id="equipo" class="container mx-auto px-6 py-20">
-        <h2 class="font-syncopate text-2xl text-center mb-16 tracking-widest uppercase border-b border-razerGreen/30 pb-4 inline-block w-full">
+        <h2
+            class="font-syncopate text-2xl text-center mb-16 tracking-widest uppercase border-b border-razerGreen/30 pb-4 inline-block w-full">
             Nuestros Integrantes
         </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group" data-aos="fade-up">
-                <div class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden">
-                    <img src="https://via.placeholder.com/150" alt="Integrante" class="grayscale group-hover:grayscale-0 transition-all">
+            <!-- Integrante 1 (Emilio) -->
+            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
+                data-aos="fade-up">
+                <div
+                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden">
+                    <img src="./src/img/emilio.jpg" alt="Emilio"
+                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
                 </div>
-                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Integrante 1</h3>
-                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Rol del Proyecto</p>
-                <p class="text-gray-400 text-sm text-center leading-relaxed italic">"Breve descripción de cada uno según las instrucciones."</p>
+                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Emilio</h3>
+                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Frontend Integrator</p>
+                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Creador del Precision Metrics
+                    Lab (PML). Entrena tus reflejos y conviértete en el mejor."</p>
+
+                <div class="text-center">
+                    <a href="./paginas/pagina1.html"
+                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
+                        Probar PML
+                    </a>
+                </div>
             </div>
-            
+
+            <!-- Integrante 2 -->
+            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
+                data-aos="fade-up" data-aos-delay="100">
+                <div
+                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden flex items-center justify-center">
+                    <span class="text-gray-500 text-3xl">?</span>
+                </div>
+                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Integrante 2</h3>
+                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Rol del equipo</p>
+                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Descripción breve del
+                    integrante y su proyecto correspondiente."</p>
+
+                <div class="text-center">
+                    <a href="./paginas/pagina2.html"
+                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
+                        Ver Proyecto
+                    </a>
+                </div>
             </div>
+
+            <!-- Integrante 3 -->
+            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
+                data-aos="fade-up" data-aos-delay="200">
+                <div
+                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden flex items-center justify-center">
+                    <span class="text-gray-500 text-3xl">?</span>
+                </div>
+                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Integrante 3</h3>
+                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Rol del equipo</p>
+                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Descripción breve del
+                    integrante y su proyecto correspondiente."</p>
+
+                <div class="text-center">
+                    <a href="./paginas/pagina3.html"
+                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
+                        Ver Proyecto
+                    </a>
+                </div>
+            </div>
+
+            <!-- Integrante 4 -->
+            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
+                data-aos="fade-up" data-aos-delay="300">
+                <div
+                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden flex items-center justify-center">
+                    <span class="text-gray-500 text-3xl">?</span>
+                </div>
+                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Integrante 4</h3>
+                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Rol del equipo</p>
+                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Descripción breve del
+                    integrante y su proyecto correspondiente."</p>
+
+                <div class="text-center">
+                    <a href="./paginas/pagina4.html"
+                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
+                        Ver Proyecto
+                    </a>
+                </div>
+            </div>
+
+            <!-- Integrante 5 -->
+            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
+                data-aos="fade-up" data-aos-delay="400">
+                <div
+                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden flex items-center justify-center">
+                    <span class="text-gray-500 text-3xl">?</span>
+                </div>
+                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Integrante 5</h3>
+                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Rol del equipo</p>
+                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Descripción breve del
+                    integrante y su proyecto correspondiente."</p>
+
+                <div class="text-center">
+                    <a href="./paginas/pagina5.html"
+                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
+                        Ver Proyecto
+                    </a>
+                </div>
+            </div>
+
+            <!-- Integrante 6 -->
+            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
+                data-aos="fade-up" data-aos-delay="500">
+                <div
+                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden flex items-center justify-center">
+                    <span class="text-gray-500 text-3xl">?</span>
+                </div>
+                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Integrante 6</h3>
+                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Rol del equipo</p>
+                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Descripción breve del
+                    integrante y su proyecto correspondiente."</p>
+
+                <div class="text-center">
+                    <a href="./paginas/pagina6.html"
+                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
+                        Ver Proyecto
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -139,4 +272,5 @@
         });
     </script>
 </body>
+
 </html>

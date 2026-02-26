@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Metrics Lab - Razer Style</title>
+    <!-- Tailwind CSS vía CDN oficial -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fuentes del Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Configuración Tailwind (Design System) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        razerGreen: '#44d62c',
+                        razerDark: '#050505',
+                        razerGrey: '#111111',
+                    },
+                    fontFamily: {
+                        syncopate: ['Syncopate', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos base y utilidades particulares */
+        .glass {
+            background: rgba(17, 17, 17, 0.85);
+            /* razerGrey con opacidad */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(68, 214, 44, 0.3);
+            /* razerGreen */
+        }
+
+        .arena-cursor {
+            cursor: crosshair;
+        }
+
+        .razer-txt-glow {
+            text-shadow: 0 0 10px rgba(68, 214, 44, 0.5);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-razerDark text-white h-screen w-screen overflow-hidden font-sans selection:bg-razerGreen selection:text-black flex items-center justify-center">
+
+    <!-- Contenedor Principal de la App -->
+    <div id="app" class="relative w-full h-full max-w-6xl max-h-[900px] mx-auto p-4 flex flex-col">
+
+        <!-- Cabecera -->
+        <header class="text-center mb-6 shrink-0 mt-4">
+            <h1
+                class="text-3xl md:text-5xl font-syncopate font-bold tracking-widest text-razerGreen razer-txt-glow uppercase">
+                Precision Metrics
+            </h1>
+            <p class="text-gray-400 mt-2 text-xs md:text-sm uppercase tracking-[0.3em] font-sans">Advanced Aim Trainer
+            </p>
+        </header>
+
+        <!-- Pantalla de Menú -->
+        <section id="menu-screen"
+            class="flex-1 flex flex-col items-center justify-center glass rounded-sm p-8 shadow-[0_0_30px_rgba(68,214,44,0.05)] transition-opacity duration-300">
+            <h2
+                class="text-xl md:text-2xl font-syncopate tracking-widest mb-8 text-white uppercase text-center border-b border-razerGreen/30 pb-4">
+                Configuración de Sesión</h2>
+
+            <div class="mb-8 w-full max-w-sm">
+                <label
+                    class="block text-xs font-syncopate text-gray-400 mb-4 text-center uppercase tracking-widest">Duración
+                    de la prueba</label>
+                <div class="grid grid-cols-2 gap-4">
+                    <button
+                        class="time-btn bg-razerGrey border border-razerGreen text-razerGreen rounded-none py-3 text-xs font-syncopate uppercase tracking-widest transition shadow-[0_0_10px_rgba(68,214,44,0.3)]"
+                        data-time="30">30 Segundos</button>
+                    <button
+                        class="time-btn bg-razerGrey border border-gray-700 text-gray-500 rounded-none py-3 text-xs font-syncopate uppercase tracking-widest transition hover:border-gray-500 hover:text-gray-300"
+                        data-time="60">60 Segundos</button>
+                </div>
+            </div>
+
+            <button id="start-btn"
+                class="px-10 py-4 bg-razerGrey border-2 border-razerGreen hover:bg-razerGreen hover:text-black text-razerGreen font-syncopate uppercase tracking-widest font-bold shadow-[0_0_15px_rgba(68,214,44,0.4)] transition-all transform hover:scale-105 active:scale-95 text-sm cursor-pointer mb-6">
+                INICIAR ENTRENAMIENTO
+            </button>
+
+            <!-- Enlace al Index - Requisito del Prompt -->
+            <a href="../index.html"
+                class="text-gray-500 hover:text-razerGreen font-syncopate text-[10px] uppercase tracking-widest transition-colors mt-4 block">Volver
+                al Menú Principal</a>
+        </section>
+
+        <!-- Pantalla de Juego (Arena) -->
+        <section id="game-screen"
+            class="hidden flex-1 flex flex-col min-h-0 border border-razerGreen/30 rounded-sm overflow-hidden shadow-2xl">
+            <!-- HUD (Heads-Up Display) -->
+            <div
+                class="flex justify-between items-center bg-razerGrey p-4 border-b border-razerGreen/30 shrink-0 shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-10 w-full">
+                <div class="flex items-center gap-3">
+                    <span class="text-gray-500 font-syncopate text-xs uppercase tracking-widest">Tiempo:</span>
+                    <span id="hud-time" class="text-xl font-mono font-bold text-razerGreen razer-txt-glow">00.0s</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-gray-500 font-syncopate text-xs uppercase tracking-widest">Puntuación:</span>
+                    <span id="hud-score" class="text-xl font-mono font-bold text-white">0</span>
+                </div>
+            </div>
+
+            <!-- Zona de Puntería -->
+            <div id="arena"
+                class="flex-1 relative bg-razerDark overflow-hidden arena-cursor shadow-inner w-full h-full">
+                <!-- Los objetivos serán inyectados aquí vía JavaScript -->
+            </div>
+        </section>
+
+        <!-- Pantalla de Resultados -->
+        <section id="result-screen"
+            class="hidden flex-1 flex flex-col items-center justify-center glass rounded-sm p-8 shadow-2xl transition-opacity duration-300">
+            <h2 class="text-2xl md:text-3xl font-syncopate tracking-widest mb-2 text-white uppercase text-center">
+                Resultados</h2>
+            <p class="text-gray-500 mb-8 font-sans uppercase tracking-[0.2em] text-xs">Rendimiento de la sesión</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-10">
+                <!-- Tarjeta: Puntuación Final -->
+                <div
+                    class="bg-razerGrey p-6 rounded-sm border border-razerGreen/20 text-center flex flex-col justify-center items-center hover:border-razerGreen/50 transition-colors">
+                    <h3 class="text-gray-500 text-xs font-syncopate uppercase tracking-widest mb-3">Aciertos</h3>
+                    <p id="res-score" class="text-4xl font-bold text-white font-mono">0</p>
+                </div>
+                <!-- Tarjeta: Precisión -->
+                <div
+                    class="bg-razerGrey p-6 rounded-sm border border-razerGreen/20 text-center relative overflow-hidden flex flex-col justify-center items-center hover:border-razerGreen/50 transition-colors">
+                    <div class="absolute inset-0 bg-gradient-to-br from-razerGreen/5 to-transparent"></div>
+                    <h3 class="text-gray-500 text-xs font-syncopate uppercase tracking-widest mb-3 relative">Precisión
+                    </h3>
+                    <p id="res-accuracy" class="text-4xl font-bold text-razerGreen font-mono relative razer-txt-glow">0%
+                    </p>
+                </div>
+                <!-- Tarjeta: Tiempo de Reacción -->
+                <div
+                    class="bg-razerGrey p-6 rounded-sm border border-razerGreen/20 text-center relative overflow-hidden flex flex-col justify-center items-center hover:border-razerGreen/50 transition-colors">
+                    <div class="absolute inset-0 bg-gradient-to-br from-razerGreen/5 to-transparent"></div>
+                    <h3 class="text-gray-500 text-xs font-syncopate uppercase tracking-widest mb-3 relative">T. Reacción
+                    </h3>
+                    <p id="res-reaction" class="text-4xl font-bold text-white font-mono relative">0ms</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+                <button id="play-again-btn"
+                    class="px-8 py-3 bg-razerGrey hover:bg-razerGreen hover:text-black text-razerGreen font-syncopate uppercase tracking-widest font-semibold border border-razerGreen shadow-[0_0_10px_rgba(68,214,44,0.3)] transition-all text-xs cursor-pointer">
+                    JUGAR DE NUEVO
+                </button>
+                <!-- Botón hacia el Index - Requisito del Prompt -->
+                <a href="../index.html"
+                    class="px-8 py-3 bg-razerGrey text-gray-300 font-syncopate uppercase tracking-widest font-semibold border border-gray-600 hover:border-razerGreen hover:text-razerGreen transition-all text-xs cursor-pointer text-center">
+                    Volver al Menú Principal
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Lógica de la Aplicación -->
+    <script>
+        /**
+         * @class AimTrainer
+         * @description Controlador principal para Precision Metrics Lab.
+         */
+        class AimTrainer {
+            constructor(config = {}) {
+                this.config = {
+                    targetSize: config.targetSize || 48, // px
+                    // Colores de los targets, utilizando el Razer Green y Blanco/Gris
+                    targetColors: config.targetColors || ['bg-razerGreen', 'bg-white', 'bg-gray-400'],
+                    defaultTime: config.defaultTime || 30 // segundos
+                };
+
+                this.state = {
+                    score: 0,
+                    totalClicks: 0,
+                    accuracy: 0,
+                    reactionTimes: [],
+                    timeRemaining: this.config.defaultTime,
+                    isPlaying: false,
+                    selectedDuration: this.config.defaultTime,
+                    currentTargetSpawnTime: 0
+                };
+
+                this.timers = {
+                    gameLoop: null
+                };
+
+                this.ui = {
+                    screens: {
+                        menu: document.getElementById('menu-screen'),
+                        game: document.getElementById('game-screen'),
+                        result: document.getElementById('result-screen')
+                    },
+                    menu: {
+                        timeBtns: document.querySelectorAll('.time-btn'),
+                        startBtn: document.getElementById('start-btn')
+                    },
+                    game: {
+                        hudTime: document.getElementById('hud-time'),
+                        hudScore: document.getElementById('hud-score'),
+                        arena: document.getElementById('arena')
+                    },
+                    result: {
+                        score: document.getElementById('res-score'),
+                        accuracy: document.getElementById('res-accuracy'),
+                        reaction: document.getElementById('res-reaction'),
+                        playAgainBtn: document.getElementById('play-again-btn')
+                    }
+                };
+
+                this.lastFrameTime = 0;
+
+                this.handleArenaClick = this.handleArenaClick.bind(this);
+                this.handleTargetClick = this.handleTargetClick.bind(this);
+                this.gameLoop = this.gameLoop.bind(this);
+
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+            }
+
+            bindEvents() {
+                this.ui.menu.timeBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => this.selectTime(e.currentTarget));
+                });
+
+                this.ui.menu.startBtn.addEventListener('click', () => this.startGame());
+
+                this.ui.game.arena.addEventListener('mousedown', this.handleArenaClick);
+
+                // Play again resetea y vuelve al menú interno
+                this.ui.result.playAgainBtn.addEventListener('click', () => this.showScreen('menu'));
+            }
+
+            selectTime(selectedBtn) {
+                this.ui.menu.timeBtns.forEach(btn => {
+                    btn.classList.remove('border-razerGreen', 'text-razerGreen', 'shadow-[0_0_10px_rgba(68,214,44,0.3)]');
+                    btn.classList.add('border-gray-700', 'text-gray-500');
+                });
+
+                selectedBtn.classList.remove('border-gray-700', 'text-gray-500');
+                selectedBtn.classList.add('border-razerGreen', 'text-razerGreen', 'shadow-[0_0_10px_rgba(68,214,44,0.3)]');
+
+                this.state.selectedDuration = parseInt(selectedBtn.dataset.time, 10);
+            }
+
+            showScreen(screenName) {
+                Object.values(this.ui.screens).forEach(screen => screen.classList.add('hidden'));
+                this.ui.screens[screenName].classList.remove('hidden');
+            }
+
+            startGame() {
+                this.state.score = 0;
+                this.state.totalClicks = 0;
+                this.state.accuracy = 0;
+                this.state.reactionTimes = [];
+                this.state.timeRemaining = this.state.selectedDuration;
+                this.state.isPlaying = true;
+
+                this.updateHudUI();
+                this.ui.game.arena.innerHTML = '';
+
+                this.showScreen('game');
+
+                this.spawnTarget();
+
+                this.lastFrameTime = performance.now();
+                this.timers.gameLoop = requestAnimationFrame(this.gameLoop);
+            }
+
+            gameLoop(timestamp) {
+                if (!this.state.isPlaying) return;
+
+                const deltaTime = (timestamp - this.lastFrameTime) / 1000;
+                this.lastFrameTime = timestamp;
+
+                this.state.timeRemaining -= deltaTime;
+
+                if (this.state.timeRemaining <= 0) {
+                    this.state.timeRemaining = 0;
+                    this.endGame();
+                } else {
+                    this.updateHudUI();
+                    this.timers.gameLoop = requestAnimationFrame(this.gameLoop);
+                }
+            }
+
+            handleArenaClick(e) {
+                if (!this.state.isPlaying) return;
+                this.state.totalClicks++;
+            }
+
+            handleTargetClick(e) {
+                if (!this.state.isPlaying) return;
+
+                e.stopPropagation();
+
+                this.state.totalClicks++;
+                this.state.score++;
+
+                const reactionTime = Date.now() - this.state.currentTargetSpawnTime;
+                this.state.reactionTimes.push(reactionTime);
+
+                this.updateHudUI();
+
+                const target = e.currentTarget;
+                if (target.parentNode) {
+                    target.parentNode.removeChild(target);
+                }
+
+                this.spawnTarget();
+            }
+
+            spawnTarget() {
+                const arenaRect = this.ui.game.arena.getBoundingClientRect();
+                const size = this.config.targetSize;
+
+                const maxX = arenaRect.width - size;
+                const maxY = arenaRect.height - size;
+
+                const randomX = Math.max(0, Math.floor(Math.random() * maxX));
+                const randomY = Math.max(0, Math.floor(Math.random() * maxY));
+
+                const randomColorClass = this.config.targetColors[Math.floor(Math.random() * this.config.targetColors.length)];
+
+                const target = document.createElement('div');
+                // Estilo cuadrado razer o círculo, vamos con caja redondeada pequeña
+                target.className = `absolute rounded-sm shadow-[0_0_15px_rgba(68,214,44,0.4)] ${randomColorClass} cursor-crosshair hover:brightness-125 active:scale-95 transition-transform duration-75`;
+                if (randomColorClass === 'bg-razerGreen') {
+                    // Refuerza visualmente que el verde es correcto y neón
+                    target.classList.add('shadow-[0_0_20px_rgba(68,214,44,0.6)]');
+                }
+
+                target.style.width = `${size}px`;
+                target.style.height = `${size}px`;
+                target.style.left = `${randomX}px`;
+                target.style.top = `${randomY}px`;
+
+                target.addEventListener('mousedown', this.handleTargetClick);
+
+                this.ui.game.arena.appendChild(target);
+
+                this.state.currentTargetSpawnTime = Date.now();
+            }
+
+            updateHudUI() {
+                this.ui.game.hudTime.textContent = this.state.timeRemaining.toFixed(1) + 's';
+                this.ui.game.hudScore.textContent = this.state.score;
+            }
+
+            endGame() {
+                this.state.isPlaying = false;
+                cancelAnimationFrame(this.timers.gameLoop);
+
+                this.ui.game.arena.innerHTML = '';
+
+                this.calculateFinalMetrics();
+                this.renderResultScreen();
+                this.showScreen('result');
+            }
+
+            calculateFinalMetrics() {
+                if (this.state.totalClicks > 0) {
+                    this.state.accuracy = (this.state.score / this.state.totalClicks) * 100;
+                } else {
+                    this.state.accuracy = 0;
+                }
+
+                if (this.state.reactionTimes.length > 0) {
+                    const sum = this.state.reactionTimes.reduce((acc, curr) => acc + curr, 0);
+                    this.state.avgReaction = sum / this.state.reactionTimes.length;
+                } else {
+                    this.state.avgReaction = 0;
+                }
+            }
+
+            renderResultScreen() {
+                this.ui.result.score.textContent = this.state.score;
+                this.ui.result.accuracy.textContent = this.state.accuracy.toFixed(2) + '%';
+
+                if (this.state.accuracy >= 90) {
+                    this.ui.result.accuracy.className = 'text-4xl font-bold text-razerGreen font-mono relative razer-txt-glow';
+                } else if (this.state.accuracy >= 70) {
+                    this.ui.result.accuracy.className = 'text-4xl font-bold text-gray-300 font-mono relative';
+                } else {
+                    this.ui.result.accuracy.className = 'text-4xl font-bold text-red-500 font-mono relative';
+                }
+
+                this.ui.result.reaction.textContent = this.state.avgReaction > 0
+                    ? Math.round(this.state.avgReaction) + 'ms'
+                    : '-';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.precisionLab = new AimTrainer({
+                targetSize: 45
+            });
+        });
+    </script>
+</body>
+
+</html>
