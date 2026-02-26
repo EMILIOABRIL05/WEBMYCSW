@@ -3,56 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipo [Nombre] - Proyecto Web</title>
+    <title>Equipo Razer Style - Proyecto Web</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3b82f6',
-                        secondary: '#10b981',
-                        dark: '#1f2937'
+                        razerGreen: '#44d62c',
+                        razerDark: '#050505', 
+                        razerGrey: '#111111',
+                    },
+                    fontFamily: {
+                        syncopate: ['Syncopate', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
+
+    <style>
+        
+        html { scroll-behavior: smooth; }
+        
+      
+        .razer-glow {
+            box-shadow: 0 0 15px rgba(68, 214, 44, 0.3);
+        }
+        .razer-glow:hover {
+            box-shadow: 0 0 25px rgba(68, 214, 44, 0.6);
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
+<body class="bg-razerDark text-white font-sans">
 
-    <nav class="bg-dark text-white shadow-xl sticky top-0 z-50">
+    <nav class="bg-black/90 border-b border-razerGreen/30 sticky top-0 z-50 backdrop-blur-md">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-extrabold tracking-tight">
-                <span class="text-primary text-3xl">🚀</span> Equipo <span class="text-primary">[Nombre]</span>
+            <div class="font-syncopate text-xl font-bold tracking-widest text-razerGreen">
+                TEAM_NIKO
             </div>
-
-            <ul class="hidden md:flex space-x-8 font-medium">
-                <li><a href="index.html" class="hover:text-primary transition-colors border-b-2 border-primary">Inicio</a></li>
-                <li><a href="pages/juego.html" class="hover:text-primary transition-colors">Minijuegos</a></li>
-                <li><a href="pages/conversores.html" class="hover:text-primary transition-colors">Conversores</a></li>
-                <li><a href="pages/calculadoras.html" class="hover:text-primary transition-colors">Calculadoras</a></li>
+            <ul class="hidden md:flex space-x-8 font-syncopate text-xs uppercase tracking-tighter">
+                <li><a href="#" class="hvr-underline-from-center py-2">Inicio</a></li>
+                <li><a href="#proyectos" class="hvr-underline-from-center py-2">Proyectos</a></li>
+                <li><a href="#equipo" class="hvr-underline-from-center py-2">Equipo</a></li>
             </ul>
-
-            <div class="hidden md:block">
-                <a href="#integrantes" class="bg-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105">
-                    Ver Equipo
-                </a>
-            </div>
         </div>
     </nav>
 
-    <main class="container mx-auto px-6 py-12">
-        <header class="text-center mb-16">
-            <h1 class="text-5xl font-black mb-4">Bienvenidos a nuestro <span class="text-primary">Proyecto Colaborativo</span></h1>
-            <p class="text-gray-600 text-xl max-w-2xl mx-auto">
-                Desarrollamos una plataforma interactiva con herramientas útiles y divertidas.
-            </p>
-        </header>
+    <header class="h-[60vh] flex flex-col items-center justify-center text-center px-4">
+        <h1 class="font-syncopate text-4xl md:text-6xl font-bold mb-4 tracking-tighter" data-aos="zoom-in">
+            SIENTE EL <span class="text-razerGreen">FUEGO</span>
+        </h1>
+        <p class="text-gray-400 max-w-xl mb-8" data-aos="fade-up" data-aos-delay="200">
+            Desarrollo colaborativo de alto rendimiento inspirado en la estética gamer.
+        </p>
+        <button class="hvr-sweep-to-right bg-razerGreen text-black font-bold px-8 py-3 uppercase text-xs tracking-widest font-syncopate">
+            Explorar más
+        </button>
+    </header>
 
-        <section id="integrantes" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            </section>
-    </main>
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, 
+            once: true      
+        });
+    </script>
 </body>
 </html>
