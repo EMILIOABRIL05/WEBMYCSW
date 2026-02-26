@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nombre del Equipo - Proyecto Web</title>
+    <title>Equipo [Nombre] - Proyecto Web</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // Configuración personalizada para que todos usen los mismos colores
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3b82f6', // Un azul llamativo
-                        secondary: '#10b981', // Un verde para éxitos
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
                         dark: '#1f2937'
                     }
                 }
@@ -21,5 +20,39 @@
     </script>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
-    </body>
+
+    <nav class="bg-dark text-white shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-extrabold tracking-tight">
+                <span class="text-primary text-3xl">🚀</span> Equipo <span class="text-primary">[Nombre]</span>
+            </div>
+
+            <ul class="hidden md:flex space-x-8 font-medium">
+                <li><a href="index.html" class="hover:text-primary transition-colors border-b-2 border-primary">Inicio</a></li>
+                <li><a href="pages/juego.html" class="hover:text-primary transition-colors">Minijuegos</a></li>
+                <li><a href="pages/conversores.html" class="hover:text-primary transition-colors">Conversores</a></li>
+                <li><a href="pages/calculadoras.html" class="hover:text-primary transition-colors">Calculadoras</a></li>
+            </ul>
+
+            <div class="hidden md:block">
+                <a href="#integrantes" class="bg-primary hover:bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105">
+                    Ver Equipo
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-12">
+        <header class="text-center mb-16">
+            <h1 class="text-5xl font-black mb-4">Bienvenidos a nuestro <span class="text-primary">Proyecto Colaborativo</span></h1>
+            <p class="text-gray-600 text-xl max-w-2xl mx-auto">
+                Desarrollamos una plataforma interactiva con herramientas útiles y divertidas.
+            </p>
+        </header>
+
+        <section id="integrantes" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            </section>
+    </main>
+
+</body>
 </html>
