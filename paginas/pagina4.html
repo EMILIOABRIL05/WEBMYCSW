@@ -3,18 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Matrix Invaders — TEAM_NIKO</title>
+    <title>Space Invaders 8‑bit — TEAM_NIKO</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- pixel font for 8‑bit style title -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root{--green:#44d62c;--dark:#050505}
         body{background:linear-gradient(180deg,#040404 0%, #060606 100%);color:#e6f7e6;font-family:'Inter',sans-serif;margin:0;min-height:100vh}
-        .hud{position:absolute;left:20px;top:18px;z-index:50;font-family:'Syncopate',sans-serif;letter-spacing:.12em;font-size:13px}
+        .hud{position:absolute;left:20px;top:18px;z-index:70;font-family:'Syncopate',sans-serif;letter-spacing:.12em;font-size:13px}
         .hud .val{color:var(--green);font-weight:700;margin-left:8px}
         #game-wrap{position:relative;max-width:1100px;margin:18px auto;padding:12px}
         .canvas-outer{position:relative;border-radius:8px;overflow:hidden;border:1px solid rgba(68,214,44,0.06);box-shadow:0 6px 30px rgba(0,0,0,0.6)}
         canvas{display:block;width:100%;height:640px;background:transparent;}
-        .controls{position:absolute;right:8px;top:8px;z-index:50;display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:600px}
+        .controls{position:absolute;right:8px;top:8px;z-index:80;display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:600px}
         .btn{border:1px solid var(--green);color:var(--green);background:transparent;padding:5px 9px;font-family:'Syncopate',sans-serif;cursor:pointer;border-radius:3px;font-size:9px;white-space:nowrap;transition:all 0.15s}
         .btn.active{background:rgba(68,214,44,0.16);box-shadow:0 4px 12px rgba(68,214,44,0.12)}
         .btn:hover{background:rgba(68,214,44,0.08)}
@@ -24,6 +25,10 @@
         .modal{background:rgba(3,3,3,0.95);border:1px solid rgba(68,214,44,.12);padding:28px;text-align:center;color:#dfffe0;border-radius:6px;min-width:280px}
         .touch-controls{position:fixed;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:12px;z-index:70;pointer-events:none}
         .touch-controls .tbtn{pointer-events:auto;background:rgba(0,0,0,0.5);border:1px solid rgba(68,214,44,0.18);color:var(--green);padding:12px 18px;border-radius:8px}
+        /* start screen styling */
+        #start-screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:90;background:#000;flex-direction:column;color:var(--green);font-family:'Press Start 2P',monospace;cursor:pointer}
+        #start-screen h1{font-size:32px;line-height:1.1;margin:0 0 20px}
+        #start-screen p{font-size:12px;opacity:.7}
         @media (min-width:900px){ .touch-controls{display:none} }
     </style>
 </head>
@@ -31,11 +36,16 @@
 
 <nav class="max-w-screen-xl mx-auto px-6 py-4 flex justify-between items-center">
     <a href="../index.html" class="font-syncopate text-[10px] tracking-widest text-razerGreen">Volver al Hub</a>
-    <div class="font-syncopate text-lg font-bold tracking-widest text-razerGreen">MATRIX INVADERS</div>
+    <div class="font-syncopate text-lg font-bold tracking-widest text-razerGreen">SPACE INVADERS</div>
     <div class="text-[10px] text-gray-600">BY MANOLO</div>
 </nav>
 
 <div id="game-wrap">
+    <!-- start screen shown before first game -->
+    <div id="start-screen">
+        <h1>SPACE<br>INVADERS</h1>
+        <p>click or press start</p>
+    </div>
     <div class="hud">
         Puntuacion: <span id="score" class="val">0</span>
         Vidas: <span id="lives" class="val">3</span>
@@ -171,53 +181,76 @@ function update(dt){
     if(aliens.every(a=>!a.on)) gameEnd(true);
 }
 
+// pixel‑art helper – draws a ship inside the rectangle given by obj (uses its w/h)
+function drawPlayerSprite(obj){
+    const pattern = [
+        '  XX  ',
+        ' XXXX ',
+        ' XXXXXX',
+        'XXXXXXX',
+        ' XX XX ',
+        '  XX  '
+    ];
+    const cols = pattern[0].length;
+    const rows = pattern.length;
+    const sizeX = obj.w/cols;
+    const sizeY = obj.h/rows;
+    ctx.fillStyle = '#55ff55';
+    pattern.forEach((row, ry)=>{
+        for(let cx=0; cx<row.length; cx++){
+            if(row[cx] === 'X') ctx.fillRect(obj.x + cx*sizeX, obj.y + ry*sizeY, sizeX, sizeY);
+        }
+    });
+}
+
+// simple alien sprite fits into object dimensions
+function drawAlienSprite(obj){
+    const pattern = [
+        '  XX  ',
+        ' XXXX ',
+        'X XX X',
+        'XXXXXX',
+        ' XX XX'
+    ];
+    const cols = pattern[0].length;
+    const rows = pattern.length;
+    const sizeX = obj.w/cols;
+    const sizeY = obj.h/rows;
+    ctx.fillStyle = '#00ffdd';
+    pattern.forEach((row, ry)=>{
+        for(let cx=0; cx<row.length; cx++){
+            if(row[cx] === 'X') ctx.fillRect(obj.x + cx*sizeX, obj.y + ry*sizeY, sizeX, sizeY);
+        }
+    });
+}
+
 function draw(dt){
     drawBackground(dt*1000);
-    
-    ctx.fillStyle='#55ff55';
-    ctx.beginPath();
-    ctx.moveTo(player.x+28, player.y);
-    ctx.lineTo(player.x+56, player.y+14);
-    ctx.lineTo(player.x, player.y+14);
-    ctx.closePath();
-    ctx.fill();
-    ctx.strokeStyle='rgba(85,255,85,0.5)';
-    ctx.lineWidth=2;
-    ctx.stroke();
-    ctx.fillStyle='#00ffff';
-    ctx.fillRect(player.x+22, player.y+1, 12, 3);
-    ctx.fillStyle='#ffdd00';
-    ctx.fillRect(player.x+10, player.y+12, 4, 2);
-    ctx.fillRect(player.x+42, player.y+12, 4, 2);
-    ctx.fillStyle='rgba(255,221,0,0.4)';
-    ctx.fillRect(player.x+8, player.y+14, 7, 3);
-    ctx.fillRect(player.x+41, player.y+14, 7, 3);
-    
+
+    // player
+    drawPlayerSprite(player);
+
     const t = Date.now();
     aliens.forEach(a=>{
         if(!a.on) return;
-        ctx.fillStyle='#00ffdd';
-        ctx.fillRect(a.x, a.y, a.w, a.h);
-        ctx.strokeStyle='#00ffff';
-        ctx.lineWidth=1.5;
-        ctx.strokeRect(a.x, a.y, a.w, a.h);
+        drawAlienSprite(a);
+        // blinking effect
         const blink = Math.abs(Math.sin(t*0.005)) > 0.3;
         if(blink){
             ctx.fillStyle='#ff00ff';
-            ctx.fillRect(a.x+8, a.y+2, 6, 3);
-            ctx.fillRect(a.x+42, a.y+2, 6, 3);
+            // two little flashing pixels near the top
+            ctx.fillRect(a.x + a.w*0.25, a.y + a.h*0.1, a.w*0.1, a.h*0.2);
+            ctx.fillRect(a.x + a.w*0.65, a.y + a.h*0.1, a.w*0.1, a.h*0.2);
         }
-        ctx.fillStyle='#ff4444';
-        ctx.fillRect(a.x+22, a.y+11, 12, 2);
         const p = Math.sin(t*0.004)*0.3 + 0.4;
         ctx.shadowColor = `rgba(0,255,221,${p})`;
         ctx.shadowBlur = 10;
     });
     ctx.shadowColor='transparent';
-    
+
     ctx.fillStyle='#88ff88';
     bullets.forEach(b=>{ctx.fillRect(b.x, b.y, b.w, b.h); ctx.fillStyle='rgba(136,255,136,0.5)'; ctx.fillRect(b.x-2, b.y-2, b.w+4, b.h+4); ctx.fillStyle='#88ff88';});
-    
+
     ctx.fillStyle='#ff5555';
     alienBullets.forEach(b=>{ctx.fillRect(b.x, b.y, b.w, b.h); ctx.fillStyle='rgba(255,85,85,0.5)'; ctx.fillRect(b.x-2, b.y-2, b.w+4, b.h+4); ctx.fillStyle='#ff5555';});
 }
@@ -244,6 +277,16 @@ function gameEnd(w){
 
 function init(){
     const keys = {};
+    const startScreen = document.getElementById('start-screen');
+
+    // hide the intro and begin a round
+    function begin(){
+        if(startScreen) startScreen.style.display='none';
+        document.getElementById('ui-overlay').style.display='none';
+        document.getElementById('ui-overlay').classList.remove('visible');
+        reset(); running = true; lastTs = null;
+    }
+
     document.addEventListener('keydown', e=>{
         if(e.repeat) return;
         keys[e.code]=true;
@@ -259,17 +302,18 @@ function init(){
         if(keys['ArrowRight'] || keys['KeyD']) player.x = Math.min(W-64, player.x+m);
     }, 16);
     
-    document.getElementById('btn-start').onclick = ()=>{reset(); running=true; lastTs=null; document.getElementById('ui-overlay').style.display='none'; document.getElementById('ui-overlay').classList.remove('visible');};
+    document.getElementById('btn-start').onclick = begin;
     document.getElementById('btn-pause').onclick = ()=>{paused=!paused; document.getElementById('btn-pause').textContent = paused ? 'Reanudar' : 'Pausar';};
-    document.getElementById('btn-restart').onclick = ()=>{reset(); running=true; lastTs=null; document.getElementById('ui-overlay').style.display='none'; document.getElementById('ui-overlay').classList.remove('visible');};
-    document.getElementById('modal-restart').onclick = ()=>{reset(); running=true; lastTs=null; document.getElementById('ui-overlay').style.display='none'; document.getElementById('ui-overlay').classList.remove('visible');};
+    document.getElementById('btn-restart').onclick = begin;
+    document.getElementById('modal-restart').onclick = begin;
+    if(startScreen) startScreen.addEventListener('click', begin);
     
     document.querySelectorAll('.diff-btn').forEach(btn=>{
         btn.onclick = ()=>{
             curDiff = btn.dataset.diff;
             document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('active'));
             btn.classList.add('active');
-            reset(); running=true; lastTs=null; document.getElementById('ui-overlay').style.display='none'; document.getElementById('ui-overlay').classList.remove('visible');
+            begin();
         };
     });
     
@@ -282,6 +326,7 @@ function init(){
     
     setInterval(()=>{if(keys['tL']) player.x = Math.max(8, player.x-8); if(keys['tR']) player.x = Math.min(W-64, player.x+8);}, 16);
     
+    // start screen displayed; don't run game until user begins
     reset();
     requestAnimationFrame(loop);
 }
