@@ -1,0 +1,321 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000000;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    padding: 15px;
+}
+
+/* EFECTO MONITOR ANTIGUO */
+.crt-effect {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+}
+
+.crt-effect::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 0, 0.03) 0px,
+        rgba(0, 0, 0, 0.5) 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 10;
+    border-radius: 10px;
+}
+
+/* TERMINAL */
+.terminal {
+    background: #0a0a0a;
+    border: 2px solid #00ff00;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow:
+        0 0 20px rgba(0, 255, 0, 0.3),
+        inset 0 0 10px rgba(0, 255, 0, 0.2);
+    position: relative;
+    z-index: 2;
+}
+
+/* HEADER */
+.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #00ff00;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    color: #00ff00;
+}
+
+.status {
+    font-size: 20px;
+    margin-right: 10px;
+    animation: pulse 1.5s infinite;
+}
+
+.status.alive {
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.5; }
+}
+
+.system {
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.time {
+    color: #00ff00;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+/* ÁREA PRINCIPAL */
+.main-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* PROGRESO */
+.progress-panel {
+    background: #001500;
+    border: 1px solid #00ff00;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.progress-label {
+    color: #00ff00;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #002200;
+    border: 1px solid #00ff00;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #00ff00;
+    width: 0%;
+    transition: width 0.3s;
+    box-shadow: 0 0 15px #00ff00;
+}
+
+.progress-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: #00ff00;
+    font-size: 0.85em;
+}
+
+/* MATRIX */
+.matrix-area {
+    background: #000000;
+    border: 1px solid #00ff00;
+    height: 100px;
+    overflow: hidden;
+    padding: 10px;
+}
+
+#matrix-code {
+    color: #00ff00;
+    font-size: 14px;
+    line-height: 1.2;
+    white-space: pre;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    opacity: 0.8;
+    animation: matrixRain 20s linear infinite;
+}
+
+@keyframes matrixRain {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}
+
+/* CÓDIGO */
+.code-display {
+    text-align: center;
+    padding: 15px;
+    background: #001000;
+    border: 2px dashed #00ff00;
+    border-radius: 5px;
+}
+
+.code-label {
+    color: #00ff00;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.code-box {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.code-digit {
+    font-size: 4em;
+    font-weight: bold;
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    background: #002200;
+    padding: 10px 20px;
+    border: 2px solid #00ff00;
+    min-width: 80px;
+    text-align: center;
+    animation: flicker 3s infinite;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    95%       { opacity: 1; }
+    96%       { opacity: 0.7; }
+    97%       { opacity: 1; }
+    98%       { opacity: 0.8; }
+}
+
+.code-hint {
+    color: #008800;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+/* INPUT */
+.input-area {
+    background: #001000;
+    border: 1px solid #00ff00;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.prompt {
+    color: #00ff00;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.glow-input {
+    width: 100%;
+    background: #000000;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    font-size: 2em;
+    padding: 15px;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    text-align: center;
+    letter-spacing: 10px;
+    margin-bottom: 15px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.glow-input:focus {
+    box-shadow: 0 0 20px #00ff00;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.neon-btn {
+    background: transparent;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    padding: 12px 25px;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    flex: 1;
+    min-width: 120px;
+}
+
+.neon-btn:hover {
+    background: #00ff00;
+    color: #000000;
+    box-shadow: 0 0 20px #00ff00;
+    transform: scale(1.02);
+}
+
+/* MENSAJES */
+.messages {
+    background: #000000;
+    border: 1px solid #00ff00;
+    padding: 15px;
+    height: 100px;
+    overflow-y: auto;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+.message {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    animation: slideIn 0.3s;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.message.success { color: #00ff00; }
+.message.error   { color: #ff3300; text-shadow: 0 0 10px #ff3300; }
+.message.info    { color: #00aa00; }
+
+/* FOOTER */
+.terminal-footer {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #00ff00;
+    display: flex;
+    justify-content: space-between;
+    color: #006600;
+    font-size: 0.8em;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .code-digit {
+        font-size: 2em;
+        min-width: 50px;
+        padding: 5px 10px;
+    }
+    .button-group { flex-direction: column; }
+    .terminal     { padding: 10px; }
+}

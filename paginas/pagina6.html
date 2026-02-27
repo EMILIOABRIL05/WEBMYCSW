@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ TERMINAL HACKER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../src/css/pagina6.css">
+</head>
+<body>
+    <div class="crt-effect">
+        <div class="terminal">
+
+            <div class="terminal-header">
+                <div class="header-left">
+                    <span class="status alive">●</span>
+                    <span class="system">SISTEMA: HACKEO ACTIVO</span>
+                </div>
+                <div class="header-right">
+                    <span class="time" id="time">22:13:47</span>
+                </div>
+            </div>
+
+            <div class="main-area">
+
+                <div class="progress-panel">
+                    <div class="progress-label">> DESCIFRANDO SEGURIDAD</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <span>INTENTOS: <span id="attempts">8/8</span></span>
+                        <span>FUEGO: ▰▰▰▰▰▰▰▰▰▰ 80%</span>
+                    </div>
+                </div>
+
+                <div class="matrix-area" id="matrix-area">
+                    <pre id="matrix-code"></pre>
+                </div>
+
+                <div class="code-display">
+                    <div class="code-label">█ CÓDIGO DE ACCESO:</div>
+                    <div class="code-box" id="code-box"></div>
+                    <div class="code-hint">[? = DÍGITO DESCONOCIDO]</div>
+                </div>
+
+                <div class="input-area">
+                    <div class="prompt">> INGRESE CÓDIGO (5 DÍGITOS):</div>
+                    <input type="text" id="code-input" maxlength="5" placeholder="_____" class="glow-input">
+                    <div class="button-group">
+                        <button class="neon-btn" id="verify-btn">[ VERIFICAR ]</button>
+                        <button class="neon-btn" id="hint-btn">[ PISTA ]</button>
+                        <button class="neon-btn" id="reset-btn">[ REINICIAR ]</button>
+                        <a href="../index.html" class="neon-btn"
+                           style="text-decoration:none;text-align:center;"
+                           onmouseover="this.style.background='#00ff00';this.style.color='#000';"
+                           onmouseout="this.style.background='transparent';this.style.color='#00ff00';">[ ← MENÚ ]</a>
+                    </div>
+                </div>
+
+                <div class="messages" id="messages"></div>
+            </div>
+
+            <div class="terminal-footer">
+                <span>> COPYRIGHT 2077 TEAM NIKO CORP</span>
+                <span>> v2.3.1</span>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../src/js/pagina6.js"></script>
+</body>
+</html>
