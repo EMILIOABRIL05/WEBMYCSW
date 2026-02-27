@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Juego de Tres en Calle (Tic-Tac-Toe) con estilo Razer">
+	<meta name="keywords" content="Ta-Te-Ti,Tic-Tac-Toe,Tres en Calle,Juego">
+	<title>Tres en Raya - TEAM_NIKO</title>
+
+	<!-- Tailwind CSS -->
+	<script src="https://cdn.tailwindcss.com"></script>
+
+	<!-- Fuentes -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@400;600&display=swap"
+		rel="stylesheet">
+
+	<!-- Hover.css -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css">
+
+	<!-- Configuración Tailwind -->
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					colors: {
+						razerGreen: '#44d62c',
+						razerDark: '#050505',
+						razerGrey: '#111111',
+					},
+					fontFamily: {
+						syncopate: ['Syncopate', 'sans-serif'],
+						sans: ['Inter', 'sans-serif'],
+					}
+				}
+			}
+		}
+	</script>
+
+	<style>
+		/* Reset y Scroll suave */
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			background-color: #050505;
+			color: white;
+		}
+
+		/* Correcciones para Hover.css */
+		.hvr-sweep-to-right:before,
+		.hvr-bounce-to-right:before,
+		.hvr-shutter-out-horizontal:before {
+			background: #44d62c !important;
+		}
+
+		.hvr-sweep-to-right:hover,
+		.hvr-bounce-to-right:hover,
+		.hvr-shutter-out-horizontal:hover {
+			color: #000000 !important;
+		}
+
+		.hvr-underline-from-center:before {
+			background: #44d62c !important;
+			height: 2px;
+		}
+
+		.btn-razer {
+			border: 1px solid #44d62c;
+			transition: all 0.3s ease;
+		}
+
+		.btn-razer:hover {
+			box-shadow: 0 0 20px rgba(68, 214, 44, 0.6);
+		}
+
+		.razer-txt-glow {
+			text-shadow: 0 0 10px rgba(68, 214, 44, 0.5);
+		}
+
+		/* Estilos para el juego */
+		.game-board {
+			display: grid;
+			grid-template-columns: repeat(3, 100px);
+			grid-template-rows: repeat(3, 100px);
+			gap: 5px;
+			margin: 30px auto;
+		}
+
+		.game-cell {
+			background-color: #111111;
+			border-radius: 8px;
+			border: 1px solid rgba(68, 214, 44, 0.2);
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 60px;
+			font-family: 'Syncopate', sans-serif;
+			transition: all 0.3s ease;
+		}
+
+		.game-cell:hover {
+			background-color: #1a1a1a;
+			border-color: #44d62c;
+			box-shadow: 0 0 10px rgba(68, 214, 44, 0.3);
+		}
+
+		.game-cell.x {
+			color: #44d62c;
+			text-shadow: 0 0 15px rgba(68, 214, 44, 0.8);
+		}
+
+		.game-cell.o {
+			color: #ffffff;
+			text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+		}
+
+		.modal-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(5, 5, 5, 0.85);
+			backdrop-filter: blur(4px);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 50;
+		}
+
+		.modal-overlay.hidden {
+			display: none;
+		}
+	</style>
+</head>
+
+<body class="font-sans bg-razerDark">
+
+	<!-- Navegación -->
+	<nav class="bg-black/95 border-b border-razerGreen/20 sticky top-0 z-50 backdrop-blur-md">
+		<div class="container mx-auto px-6 py-4 flex justify-between items-center">
+			<div class="font-syncopate text-xl font-bold tracking-widest text-razerGreen razer-txt-glow">
+				TEAM_NIKO
+			</div>
+
+			<ul class="hidden md:flex space-x-8 font-syncopate text-[10px] uppercase tracking-[0.2em]">
+				<li><a href="../index.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Inicio</a></li>
+				<li><a href="./pagina1.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Minijuegos / PML</a></li>
+				<li><a href="./pagina2.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Solitario</a></li>
+				<li><a href="./pagina5.html" class="hvr-underline-from-center py-2 text-razerGreen">Tres en raya</a></li>
+			</ul>
+
+			<div class="hidden md:block">
+				<a href="../index.html#equipo"
+					class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase tracking-widest">
+					Ver Equipo
+				</a>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Contenido Principal -->
+	<main class="min-h-screen flex flex-col items-center pt-20 pb-20">
+		<h1 class="font-syncopate text-4xl md:text-5xl font-bold mb-12 tracking-tighter razer-txt-glow text-razerGreen">
+			TRES EN CALLE
+		</h1>
+
+		<!-- Modal de Inicio -->
+		<div class="modal-overlay" id="modalInicio">
+			<div class="bg-razerGrey border border-razerGreen/30 px-8 py-10 rounded-lg text-center max-w-md mx-4">
+				<h2 class="font-syncopate text-2xl mb-6 text-razerGreen razer-txt-glow">TRES EN RAYA</h2>
+				<p class="text-gray-300 mb-8 text-sm">¿Listo para el desafío? ¡Juega contra la máquina!</p>
+				<button id="btnJugar"
+					class="hvr-sweep-to-right btn-razer font-syncopate px-8 py-3 uppercase tracking-widest text-razerGreen mb-4 w-full">
+					Jugar Ahora
+				</button>
+				<button id="btnSalir"
+					class="hvr-sweep-to-right btn-razer font-syncopate px-8 py-3 uppercase tracking-widest text-gray-400 w-full hover:text-razerGreen">
+					Volver al Inicio
+				</button>
+			</div>
+		</div>
+
+		<!-- Tablero del Juego -->
+		<div id="tablero" class="hidden">
+			<div class="game-board" id="gameBoard"></div>
+			<div class="text-center mt-8">
+				<p class="text-razerGreen font-syncopate mb-6">Turno: <span id="turno" class="text-razerGreen razer-txt-glow">X</span></p>
+				<button id="btnNuevaPartida"
+					class="hvr-sweep-to-right btn-razer font-syncopate px-8 py-3 uppercase tracking-widest text-razerGreen">
+					Nueva Partida
+				</button>
+			</div>
+		</div>
+	</main>
+
+	<script type="text/javascript" src="../src/js/tateti.js"></script>
+</body>
+
+</html>
