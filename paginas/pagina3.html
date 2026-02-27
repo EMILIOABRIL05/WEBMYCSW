@@ -2,37 +2,68 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>NIKO_SYSTEMS: DOOM_EMULATOR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKO_SYSTEMS: NEON_RHYTHM_PRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://js-dos.com/v7/build/js-dos.css">
-    <script src="https://js-dos.com/v7/build/js-dos.js"></script>
-    
     <link rel="stylesheet" href="../src/css/pagina3.css">
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-black text-white font-sans overflow-hidden">
 
-    <div class="flex flex-col items-center justify-center min-h-screen p-4">
-        <h1 class="font-syncopate text-razerGreen text-2xl mb-6 tracking-tighter razer-txt-glow">
-            PROJECT_DOOM_v1.0
-        </h1>
+    <div class="fixed inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
 
-        <div class="relative p-2 bg-razerGrey border-4 border-razerGreen/50 shadow-[0_0_30px_rgba(68,214,44,0.2)]">
-            <div id="dos" class="w-[320px] h-[200px] md:w-[640px] md:h-[400px]"></div>
+    <div class="fixed top-6 right-6 z-50">
+        <a href="../index.html" class="group flex items-center gap-3 px-4 py-2 border border-red-500/50 bg-red-950/20 hover:bg-red-600 hover:border-red-600 transition-all duration-300">
+            <span class="font-syncopate text-[10px] text-red-500 group-hover:text-white tracking-widest">SALIR_DEL_SISTEMA</span>
+            <div class="w-2 h-2 bg-red-500 animate-pulse"></div>
+        </a>
+    </div>
+
+    <div class="flex items-center justify-center min-h-screen p-4">
+        
+        <div class="hidden xl:flex flex-col items-start gap-4 opacity-50 mr-20">
+            <div class="w-32 h-[1px] bg-razerGreen shadow-[0_0_10px_#44d62c]"></div>
+            <div class="font-syncopate text-[8px] tracking-[0.4em] text-razerGreen leading-relaxed">
+                CORE_STATUS: OK<br>
+                SYNC_DRIVER: V.2.0<br>
+                LATENCY: 0.02ms
+            </div>
+            <div class="w-1 h-32 bg-gradient-to-b from-razerGreen to-transparent"></div>
+        </div>
+
+        <div class="flex flex-col items-center z-10">
+            <h1 class="font-syncopate text-razerGreen text-2xl mb-2 razer-txt-glow">NEON_RHYTHM_V1</h1>
             
-            <div id="loader" class="absolute inset-0 flex items-center justify-center bg-black z-10">
-                <p class="font-syncopate text-razerGreen animate-pulse text-xs">INICIALIZANDO_SISTEMA...</p>
+            <div class="mb-4 font-syncopate text-sm text-razerGreen border border-razerGreen/20 px-6 py-2 bg-black/80 backdrop-blur-md shadow-[0_0_20px_rgba(68,214,44,0.1)]">
+                SCORE: <span id="score">0</span> | COMBO: <span id="combo">0</span>
+            </div>
+
+            <div id="game-board" class="relative w-[300px] h-[500px] bg-[#0a0a0a] border-x-2 border-razerGreen/30 flex justify-around items-end pb-12 overflow-hidden shadow-[0_0_60px_rgba(0,0,0,1)]">
+                <div class="lane" id="lane-0"><span class="key-hint">A</span></div>
+                <div class="lane" id="lane-1"><span class="key-hint">S</span></div>
+                <div class="lane" id="lane-2"><span class="key-hint">D</span></div>
+                <div class="lane" id="lane-3"><span class="key-hint">F</span></div>
+                
+                <div class="absolute bottom-12 w-full h-[3px] bg-razerGreen shadow-[0_0_15px_#44d62c] z-10"></div>
+
+                <div id="start-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/95 z-20">
+                    <button id="startBtn" class="btn-razer font-syncopate text-xs px-10 py-5 uppercase tracking-widest text-razerGreen border-2 border-razerGreen hover:bg-razerGreen hover:text-black transition-all">
+                        INICIAR_PROTOCOLO
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="mt-8 flex gap-4">
-            <button id="startBtn" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-8 py-3 uppercase tracking-widest text-razerGreen">
-                EJECUTAR_DOOM
-            </button>
-            <a href="../index.html" class="border border-white/20 px-8 py-3 text-[10px] font-syncopate uppercase hover:bg-white hover:text-black transition-all">
-                SALIR
-            </a>
+        <div class="hidden xl:flex flex-col items-end gap-4 opacity-50 ml-20 text-right">
+            <div class="w-32 h-[1px] bg-razerGreen shadow-[0_0_10px_#44d62c]"></div>
+            <div class="font-syncopate text-[8px] tracking-[0.4em] text-razerGreen leading-relaxed">
+                NIKO_OS_STREAM<br>
+                ENCRYPT: AES-256<br>
+                FRAME_RATE: 144
+            </div>
+            <div class="w-1 h-32 bg-gradient-to-t from-razerGreen to-transparent"></div>
         </div>
+
     </div>
 
     <script src="../src/js/pagina3.js"></script>
