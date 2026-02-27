@@ -53,6 +53,23 @@
         .btn-razer { border: 1px solid #44d62c; transition: all 0.3s ease; }
         .btn-razer:hover { box-shadow: 0 0 20px rgba(68, 214, 44, 0.6); }
         .razer-txt-glow { text-shadow: 0 0 10px rgba(68, 214, 44, 0.5); }
+        
+        @keyframes glow-pulse {
+            0%, 100% { 
+                text-shadow: 0 0 5px rgba(68, 214, 44, 0.5),
+                             0 0 10px rgba(68, 214, 44, 0.5),
+                             0 0 15px rgba(68, 214, 44, 0.3);
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(68, 214, 44, 1),
+                             0 0 30px rgba(68, 214, 44, 0.8),
+                             0 0 40px rgba(68, 214, 44, 0.6);
+            }
+        }
+        
+        .glow-pulsate {
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
     </style>
 </head>
 
@@ -60,13 +77,7 @@
 
     <nav class="bg-black/95 border-b border-razerGreen/20 sticky top-0 z-50 backdrop-blur-md">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="font-syncopate text-xl font-bold tracking-widest text-razerGreen razer-txt-glow">TEAM_NIKO</div>
-            <ul class="hidden md:flex space-x-8 font-syncopate text-[10px] uppercase tracking-[0.2em]">
-                <li><a href="index.html" class="hvr-underline-from-center py-2 text-razerGreen">Inicio</a></li>
-                <li><a href="./paginas/pagina1.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Minijuegos / PML</a></li>
-                <li><a href="./paginas/pagina2.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Solitario</a></li>
-                <li><a href="./paginas/pagina5.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Tres en raya</a></li>
-            </ul>
+            <div class="font-syncopate text-xl font-bold tracking-widest text-razerGreen glow-pulsate">TEAM_NIKO</div>
             <div class="hidden md:block">
                 <a href="#equipo" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase tracking-widest">Ver Equipo</a>
             </div>
@@ -80,7 +91,7 @@
         </h1>
         <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl mb-10 uppercase tracking-[0.3em]" data-aos="fade-up" data-aos-delay="200">Siente el fuego del código</p>
         <div data-aos="fade-up" data-aos-delay="400">
-            <button class="hvr-bounce-to-right btn-razer font-syncopate text-xs tracking-[0.2em] px-10 py-4 uppercase font-bold">Más Información ></button>
+            <a href="https://github.com/EMILIOABRIL05/WEBMYCSW" class="hvr-bounce-to-right btn-razer font-syncopate text-xs tracking-[0.2em] px-10 py-4 uppercase font-bold">Mas Informacion ></a>
         </div>
     </header>
 
@@ -101,7 +112,8 @@
                     </div>
                     <div class="absolute inset-0 h-full w-full bg-razerDark border border-razerGreen/50 p-8 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col justify-center text-center">
                         <h3 class="font-syncopate text-[10px] text-razerGreen uppercase mb-4">Expediente_Emilio</h3>
-                        <p class="text-gray-300 text-[11px] italic mb-6">"Creador del Precision Metrics Lab (PML). Especialista en la integración de métricas de rendimiento y optimización de interfaces dinámicas."</p>
+                        <p class="text-gray-300 text-[11px] italic mb-2">Creador del Precision Metrics Lab (PML).</p>
+                        <p class="text-gray-300 text-[11px] italic mb-6">Emilio, 20 anos. Creador del Precision Metrics Lab (PML). Especialista en Vibe Coding.</p>
                         <a href="./paginas/pagina1.html" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase text-razerGreen">Probar PML</a>
                     </div>
                 </div>

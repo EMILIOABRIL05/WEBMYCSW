@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscaminas - TEAM_NIKO</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        razerGreen: '#44d62c',
+                        razerDark: '#050505',
+                        razerGrey: '#111111',
+                    },
+                    fontFamily: {
+                        syncopate: ['Syncopate', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #050505; color: white; }
+        .btn-razer { border: 1px solid #44d62c; transition: all 0.3s ease; }
+        .btn-razer:hover { box-shadow: 0 0 20px rgba(68, 214, 44, 0.6); }
+        .razer-txt-glow { text-shadow: 0 0 10px rgba(68, 214, 44, 0.5); }
+    </style>
+</head>
+
+<body class="font-sans">
+    <nav class="bg-black/95 border-b border-razerGreen/20 sticky top-0 z-50 backdrop-blur-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="font-syncopate text-xl font-bold tracking-widest text-razerGreen razer-txt-glow">TEAM_NIKO</div>
+            <a href="../index.html" class="btn-razer font-syncopate text-[10px] px-5 py-2 uppercase tracking-widest">Volver al Inicio</a>
+        </div>
+    </nav>
+
+    <main class="min-h-[70vh] flex flex-col items-center justify-center text-center px-6">
+        <h1 class="font-syncopate text-3xl md:text-5xl text-razerGreen razer-txt-glow mb-4">BUSCAMINAS</h1>
+        <p class="text-gray-400 text-sm md:text-base max-w-xl">Modulo en desarrollo. Pronto disponible en esta coleccion.</p>
+        <a href="../index.html" class="btn-razer font-syncopate text-[10px] px-6 py-3 uppercase tracking-widest mt-8">Volver al Hub</a>
+    </main>
+</body>
+
+</html>
