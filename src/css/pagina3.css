@@ -1,0 +1,21 @@
+/* Color personalizado para tu sección */
+:root {
+    --razer-green: #44d62c;
+}
+
+.font-syncopate { font-family: 'Syncopate', sans-serif; }
+
+/* Animación de entrada para el conversor */
+#resultArea {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilo del input al enfocar */
+input:focus {
+    box-shadow: 0 0 10px var(--razer-green);
+}
