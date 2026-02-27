@@ -1,24 +1,63 @@
 :root { --razer-green: #44d62c; }
 
 .font-syncopate { font-family: 'Syncopate', sans-serif; }
-
-/* Efecto de líneas de monitor antiguo (Scanlines) */
-#dos::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    z-index: 2;
-    background-size: 100% 2px, 3px 100%;
-    pointer-events: none;
-}
-
 .razer-txt-glow { text-shadow: 0 0 15px var(--razer-green); }
 
-.btn-razer {
-    border: 1px solid var(--razer-green);
+/* --- DECORACIONES DE EXTREMOS --- */
+.bg-grid-pattern {
+    background-image: linear-gradient(var(--razer-green) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--razer-green) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+.tech-line-v {
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--razer-green), transparent);
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+/* --- ESTILOS DE JUEGO --- */
+.lane {
     position: relative;
-    overflow: hidden;
+    width: 25%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.key-hint {
+    position: absolute;
+    bottom: 5px;
+    font-size: 14px;
+    color: #1a1a1a;
+    font-family: 'Syncopate';
+}
+
+.note {
+    position: absolute;
+    width: 80%;
+    height: 18px;
+    background: var(--razer-green);
+    box-shadow: 0 0 15px var(--razer-green);
+    border-radius: 2px;
+    z-index: 15;
+    will-change: top;
+    transform: translateZ(0); 
+}
+
+.hit-flash { animation: flash 0.1s ease-out; }
+@keyframes flash {
+    0% { background-color: rgba(68, 214, 44, 0.4); }
+    100% { background-color: transparent; }
+}
+
+.btn-razer:hover { 
+    background: var(--razer-green); 
+    color: black; 
+    box-shadow: 0 0 20px var(--razer-green); 
 }
