@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solitario Razer – TEAM_NIKO</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { razerGreen: '#44d62c', razerDark: '#050505', razerGrey: '#111111' },
+                    fontFamily: { syncopate: ['Syncopate', 'sans-serif'], sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="../src/css/pagina2.css">
+</head>
+
+<body>
+
+<nav class="sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-screen-xl mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="../index.html" class="flex items-center gap-3 group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-razerGreen group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            <span class="font-syncopate text-[10px] tracking-widest text-razerGreen">Volver al Hub</span>
+        </a>
+        <div class="font-syncopate text-lg font-bold tracking-widest text-razerGreen glow">SOLITARIO RAZER</div>
+        <div class="font-syncopate text-[10px] tracking-widest text-gray-600">BY MANOLO</div>
+    </div>
+</nav>
+
+<div id="diff-badge">FACIL</div>
+
+<main class="relative">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(68,214,44,0.06),transparent_60%)] pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-screen-xl mx-auto px-4 pt-8">
+
+        <div class="text-center mb-6" data-aos="fade-down">
+            <h1 class="font-syncopate text-3xl md:text-5xl tracking-widest text-white glow mb-3">KLONDIKE</h1>
+            <div id="stats-bar" class="justify-center mb-4">
+                <div>Movimientos: <span id="stat-moves">0</span></div>
+                <div>Puntos: <span id="stat-score">0</span></div>
+                <div>Repasos: <span id="stat-draws">inf</span></div>
+                <div id="timer-wrap" class="hidden">Tiempo: <span id="stat-timer">00:00</span></div>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-center gap-4 mb-6" data-aos="fade-up" data-aos-delay="80">
+            <div id="diff-panel">
+                <button class="btn-rz active" data-diff="0">Facil</button>
+                <button class="btn-rz" data-diff="1">Normal</button>
+                <button class="btn-rz" data-diff="2">Dificil</button>
+                <button class="btn-rz" data-diff="3">Experto</button>
+            </div>
+            <button id="btn-new" class="btn-rz" style="padding:10px 30px;font-size:11px;">Nueva Partida</button>
+        </div>
+
+        <div id="board-wrap" data-aos="zoom-in" data-aos-delay="160">
+
+            <div id="top-row">
+                <div id="stock-zone" class="zone" onclick="clickStock()">
+                    <div class="zone-icon" id="stock-icon">&#8635;</div>
+                </div>
+                <div id="waste-zone" class="zone">
+                    <div class="zone-icon">&#9830;</div>
+                </div>
+                <div id="spacer"></div>
+                <div id="f0" class="zone foundation" data-fi="0"><div class="zone-icon">&#9829;</div></div>
+                <div id="f1" class="zone foundation" data-fi="1"><div class="zone-icon">&#9830;</div></div>
+                <div id="f2" class="zone foundation" data-fi="2"><div class="zone-icon">&#9827;</div></div>
+                <div id="f3" class="zone foundation" data-fi="3"><div class="zone-icon">&#9824;</div></div>
+            </div>
+
+            <div id="tableau-row">
+                <div class="pile" id="t0" data-ti="0"></div>
+                <div class="pile" id="t1" data-ti="1"></div>
+                <div class="pile" id="t2" data-ti="2"></div>
+                <div class="pile" id="t3" data-ti="3"></div>
+                <div class="pile" id="t4" data-ti="4"></div>
+                <div class="pile" id="t5" data-ti="5"></div>
+                <div class="pile" id="t6" data-ti="6"></div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<div id="drag-ghost"></div>
+
+<div id="win-modal" class="modal-overlay hidden">
+    <div class="modal-box" data-aos="zoom-in">
+        <div class="font-syncopate text-5xl text-razerGreen glow mb-3">VICTORIA</div>
+        <p class="text-gray-400 font-syncopate text-xs tracking-widest mb-2 uppercase">Has ganado en <span id="win-diff-name" class="text-razerGreen"></span></p>
+        <p class="text-white text-sm mb-1">Puntuacion: <strong class="text-razerGreen" id="win-score">0</strong></p>
+        <p class="text-white text-sm mb-6">Movimientos: <strong class="text-razerGreen" id="win-moves">0</strong></p>
+        <p id="win-next-msg" class="text-razerGreen font-syncopate text-[10px] tracking-widest mb-6 uppercase"></p>
+        <div class="flex gap-3 justify-center flex-wrap">
+            <button class="btn-rz" onclick="startGame()">Jugar de Nuevo</button>
+            <button class="btn-rz" onclick="document.getElementById('win-modal').classList.add('hidden')">Ver Tablero</button>
+        </div>
+    </div>
+</div>
+
+<div id="lose-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+        <div class="font-syncopate text-4xl mb-3" style="color:#ff4444;text-shadow:0 0 12px rgba(255,68,68,.7)">SIN MOVIMIENTOS</div>
+        <p class="text-gray-400 font-syncopate text-xs tracking-widest mb-6 uppercase">El mazo esta agotado y no quedan jugadas validas.</p>
+        <div class="flex gap-3 justify-center flex-wrap">
+            <button class="btn-rz" onclick="startGame()">Nueva Partida</button>
+            <button class="btn-rz" style="border-color:#666;color:#666" onclick="document.getElementById('lose-modal').classList.add('hidden')">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="../src/js/pagina2.js"></script>
+</body>
+</html>

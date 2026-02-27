@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Space Invaders 8‑bit — TEAM_NIKO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- pixel font for 8‑bit style title -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--green:#44d62c;--dark:#050505}
+        body{background:linear-gradient(180deg,#040404 0%, #060606 100%);color:#e6f7e6;font-family:'Inter',sans-serif;margin:0;min-height:100vh}
+        .hud{position:absolute;left:20px;top:18px;z-index:70;font-family:'Syncopate',sans-serif;letter-spacing:.12em;font-size:13px}
+        .hud .val{color:var(--green);font-weight:700;margin-left:8px}
+        #game-wrap{position:relative;max-width:1100px;margin:18px auto;padding:12px}
+        .canvas-outer{position:relative;border-radius:8px;overflow:hidden;border:1px solid rgba(68,214,44,0.06);box-shadow:0 6px 30px rgba(0,0,0,0.6)}
+        canvas{display:block;width:100%;height:640px;background:transparent;}
+        .controls{position:absolute;right:8px;top:8px;z-index:80;display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:600px}
+        .btn{border:1px solid var(--green);color:var(--green);background:transparent;padding:5px 9px;font-family:'Syncopate',sans-serif;cursor:pointer;border-radius:3px;font-size:9px;white-space:nowrap;transition:all 0.15s}
+        .btn.active{background:rgba(68,214,44,0.16);box-shadow:0 4px 12px rgba(68,214,44,0.12)}
+        .btn:hover{background:rgba(68,214,44,0.08)}
+        .btn:active{transform:translateY(1px)}
+        .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:60;pointer-events:none}
+        .overlay.visible{pointer-events:auto}
+        .modal{background:rgba(3,3,3,0.95);border:1px solid rgba(68,214,44,.12);padding:28px;text-align:center;color:#dfffe0;border-radius:6px;min-width:280px}
+        .touch-controls{position:fixed;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:12px;z-index:70;pointer-events:none}
+        .touch-controls .tbtn{pointer-events:auto;background:rgba(0,0,0,0.5);border:1px solid rgba(68,214,44,0.18);color:var(--green);padding:12px 18px;border-radius:8px}
+        /* start screen styling */
+        #start-screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:90;background:#000;flex-direction:column;color:var(--green);font-family:'Press Start 2P',monospace;cursor:pointer}
+        #start-screen h1{font-size:32px;line-height:1.1;margin:0 0 20px}
+        #start-screen p{font-size:12px;opacity:.7}
+        @media (min-width:900px){ .touch-controls{display:none} }
+    </style>
+</head>
+<body>
+
+<nav class="max-w-screen-xl mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="../index.html" class="font-syncopate text-[10px] tracking-widest text-razerGreen">Volver al Hub</a>
+    <div class="font-syncopate text-lg font-bold tracking-widest text-razerGreen">SPACE INVADERS</div>
+    <div class="text-[10px] text-gray-600">BY MANOLO</div>
+</nav>
+
+<div id="game-wrap">
+    <!-- start screen shown before first game -->
+    <div id="start-screen">
+        <h1>SPACE<br>INVADERS</h1>
+        <p>click or press start</p>
+    </div>
+    <div class="hud">
+        Puntuacion: <span id="score" class="val">0</span>
+        Vidas: <span id="lives" class="val">3</span>
+    </div>
+    <div class="controls">
+        <button id="btn-start" class="btn">Iniciar</button>
+        <button id="btn-pause" class="btn">Pausar</button>
+        <button id="btn-restart" class="btn">Reiniciar</button>
+        <span style="font-size:8px;color:rgba(200,255,200,.6);letter-spacing:.1em;flex-shrink:0;margin-left:4px">|</span>
+        <span style="font-size:8px;color:rgba(200,255,200,.6);letter-spacing:.1em;flex-shrink:0">Dif</span>
+        <div id="diff-panel" style="display:flex;gap:2px">
+            <button class="btn diff-btn" data-diff="easy" title="Facil">F</button>
+            <button class="btn diff-btn active" data-diff="medium" title="Medio">M</button>
+            <button class="btn diff-btn" data-diff="hard" title="Dificil">D</button>
+            <button class="btn diff-btn" data-diff="impossible" title="Imposible">I</button>
+        </div>
+    </div>
+
+    <div class="canvas-outer" style="position:relative">
+        <canvas id="game-canvas" width="1100" height="640" style="position:relative;z-index:20"></canvas>
+    </div>
+    <div class="touch-controls">
+        <button id="touch-left" class="tbtn">Izq</button>
+        <button id="touch-fire" class="tbtn">FUEGO</button>
+        <button id="touch-right" class="tbtn">Der</button>
+    </div>
+
+    <div id="ui-overlay" class="overlay" style="pointer-events:none;display:none">
+        <div id="modal" class="modal">
+            <h2 id="modal-title" style="color:var(--green);font-family:'Syncopate';margin-bottom:8px">Ganaste</h2>
+            <p id="modal-msg" style="margin-bottom:12px">Puntuacion final: <span id="final-score">0</span></p>
+            <div style="display:flex;gap:8px;justify-content:center">
+                <button id="modal-restart" class="btn" style="pointer-events:auto">Jugar otra</button>
+                <a href="../index.html" class="btn" style="pointer-events:auto">Volver</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const gCanvas = document.getElementById('game-canvas');
+const ctx = gCanvas.getContext('2d');
+let W = 1100, H = 640;
+
+let bgOffset = 0;
+function drawBackground(dt){
+    const grad = ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0, 'rgba(5,15,5,0.8)');
+    grad.addColorStop(0.5, 'rgba(3,8,3,0.6)');
+    grad.addColorStop(1, 'rgba(5,12,5,0.7)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+    
+    bgOffset = (bgOffset + dt*20) % (H+150);
+    ctx.font = 'bold 14px monospace';
+    const chars = '01*#';
+    for(let i=0;i<140;i++){
+        const x = i*8 + 2;
+        const y = bgOffset + (Math.sin(i)*30 - 100);
+        const char = chars[Math.floor(Math.random()*4)];
+        const opac = Math.sin((bgOffset + i*50)*0.008)*0.08 + 0.18;
+        ctx.fillStyle = `rgba(68,214,44,${opac})`;
+        ctx.fillText(char, x, y);
+    }
+    
+    ctx.fillStyle = 'rgba(68,214,44,0.03)';
+    for(let y = (bgOffset*0.4) % 40; y < H; y += 40){ ctx.fillRect(0, y, W, 2); }
+}
+
+const player = {w:56, h:14, x:W/2-28, y:H-70, speed:320};
+let bullets = [], aliens = [], alienBullets = [];
+let score = 0, lives = 3, running = false, paused = false, lastTs = null;
+
+const DIFF = {
+    easy:{rows:3, cols:6, aspd:12, lives:5, mint:0.5},
+    medium:{rows:4, cols:8, aspd:20, lives:3, mint:0.35},
+    hard:{rows:5, cols:9, aspd:30, lives:2, mint:0.28},
+    impossible:{rows:6, cols:10, aspd:50, lives:1, mint:0.22}
+};
+let curDiff = 'medium', alienDir = 1, alienSpd = 20, alienTime = 0, alienInt = 0.35;
+
+function spawn(r=4, c=8){
+    aliens = [];
+    for(let i=0;i<r;i++)
+        for(let j=0;j<c;j++)
+            aliens.push({x:80+j*74, y:60+i*40, w:56, h:14, on:true});
+}
+
+function reset(){
+    const d = DIFF[curDiff] || DIFF.medium;
+    score = 0; bgOffset = 0; bullets = []; alienBullets = [];
+    player.x = W/2-28;
+    spawn(d.rows, d.cols);
+    alienDir = 1; alienSpd = d.aspd; alienTime = 0; alienInt = d.mint;
+    lives = d.lives;
+    document.getElementById('score').textContent = score;
+    document.getElementById('lives').textContent = lives;
+    ctx.clearRect(0,0,W,H);
+}
+
+function fire(){ if(running && !paused) bullets.push({x:player.x+27, y:player.y-10, w:4, h:10, vy:-520}); }
+function alienF(){ if(!running || paused) return; const a = aliens.filter(x=>x.on); if(!a.length) return; const e = a[Math.random()*a.length|0]; alienBullets.push({x:e.x+27, y:e.y+20, vy:140, w:4, h:10}); }
+
+function overlap(a,b){ return !(a.x+a.w<b.x || a.x>b.x+b.w || a.y+a.h<b.y || a.y>b.y+b.h); }
+
+function update(dt){
+    bullets.forEach(b=>b.y += b.vy*dt);
+    bullets = bullets.filter(b=>b.y > -10);
+    
+    alienTime += dt;
+    if(alienTime >= alienInt){
+        let rev = false;
+        aliens.forEach(a=>{if(a.on) a.x += alienDir*18; if(a.x<=8 || a.x+a.w>=W-8) rev=true;});
+        if(rev){alienDir *= -1; aliens.forEach(a=>{if(a.on) a.y+=20;});}
+        alienTime = 0;
+        if(Math.random()<0.28) alienF();
+    }
+    
+    alienBullets.forEach(b=>b.y += b.vy*dt);
+    alienBullets = alienBullets.filter(b=>b.y<H+20);
+    
+    bullets.forEach(b=>{
+        aliens.forEach(a=>{
+            if(a.on && overlap(b,a)){a.on=false; b.y=-9999; score+=12; document.getElementById('score').textContent=score;}
+        });
+    });
+    
+    alienBullets.forEach(b=>{
+        if(overlap(b,player)){b.y=H+999; lives--; document.getElementById('lives').textContent=lives; if(lives<=0) gameEnd(false);}
+    });
+    
+    aliens.forEach(a=>{if(a.on && a.y+14>=player.y) gameEnd(false);});
+    if(aliens.every(a=>!a.on)) gameEnd(true);
+}
+
+// pixel‑art helper – draws a ship inside the rectangle given by obj (uses its w/h)
+function drawPlayerSprite(obj){
+    const pattern = [
+        '  XX  ',
+        ' XXXX ',
+        ' XXXXXX',
+        'XXXXXXX',
+        ' XX XX ',
+        '  XX  '
+    ];
+    const cols = pattern[0].length;
+    const rows = pattern.length;
+    const sizeX = obj.w/cols;
+    const sizeY = obj.h/rows;
+    ctx.fillStyle = '#55ff55';
+    pattern.forEach((row, ry)=>{
+        for(let cx=0; cx<row.length; cx++){
+            if(row[cx] === 'X') ctx.fillRect(obj.x + cx*sizeX, obj.y + ry*sizeY, sizeX, sizeY);
+        }
+    });
+}
+
+// simple alien sprite fits into object dimensions
+function drawAlienSprite(obj){
+    const pattern = [
+        '  XX  ',
+        ' XXXX ',
+        'X XX X',
+        'XXXXXX',
+        ' XX XX'
+    ];
+    const cols = pattern[0].length;
+    const rows = pattern.length;
+    const sizeX = obj.w/cols;
+    const sizeY = obj.h/rows;
+    ctx.fillStyle = '#00ffdd';
+    pattern.forEach((row, ry)=>{
+        for(let cx=0; cx<row.length; cx++){
+            if(row[cx] === 'X') ctx.fillRect(obj.x + cx*sizeX, obj.y + ry*sizeY, sizeX, sizeY);
+        }
+    });
+}
+
+function draw(dt){
+    drawBackground(dt*1000);
+
+    // player
+    drawPlayerSprite(player);
+
+    const t = Date.now();
+    aliens.forEach(a=>{
+        if(!a.on) return;
+        drawAlienSprite(a);
+        // blinking effect
+        const blink = Math.abs(Math.sin(t*0.005)) > 0.3;
+        if(blink){
+            ctx.fillStyle='#ff00ff';
+            // two little flashing pixels near the top
+            ctx.fillRect(a.x + a.w*0.25, a.y + a.h*0.1, a.w*0.1, a.h*0.2);
+            ctx.fillRect(a.x + a.w*0.65, a.y + a.h*0.1, a.w*0.1, a.h*0.2);
+        }
+        const p = Math.sin(t*0.004)*0.3 + 0.4;
+        ctx.shadowColor = `rgba(0,255,221,${p})`;
+        ctx.shadowBlur = 10;
+    });
+    ctx.shadowColor='transparent';
+
+    ctx.fillStyle='#88ff88';
+    bullets.forEach(b=>{ctx.fillRect(b.x, b.y, b.w, b.h); ctx.fillStyle='rgba(136,255,136,0.5)'; ctx.fillRect(b.x-2, b.y-2, b.w+4, b.h+4); ctx.fillStyle='#88ff88';});
+
+    ctx.fillStyle='#ff5555';
+    alienBullets.forEach(b=>{ctx.fillRect(b.x, b.y, b.w, b.h); ctx.fillStyle='rgba(255,85,85,0.5)'; ctx.fillRect(b.x-2, b.y-2, b.w+4, b.h+4); ctx.fillStyle='#ff5555';});
+}
+
+function loop(ts){
+    if(!lastTs) lastTs=ts;
+    const dt = (ts-lastTs)/1000;
+    lastTs = ts;
+    ctx.clearRect(0,0,W,H);
+    if(running && !paused) update(dt);
+    draw(dt);
+    requestAnimationFrame(loop);
+}
+
+function gameEnd(w){
+    running=false; paused=false;
+    const o = document.getElementById('ui-overlay');
+    o.style.display='flex';
+    o.classList.add('visible');
+    document.getElementById('modal-title').textContent = w ? 'VICTORIA' : 'GAME OVER';
+    document.getElementById('modal-msg').innerHTML = 'Puntuacion: ' + score;
+    document.getElementById('final-score').textContent = score;
+}
+
+function init(){
+    const keys = {};
+    const startScreen = document.getElementById('start-screen');
+
+    // hide the intro and begin a round
+    function begin(){
+        if(startScreen) startScreen.style.display='none';
+        document.getElementById('ui-overlay').style.display='none';
+        document.getElementById('ui-overlay').classList.remove('visible');
+        reset(); running = true; lastTs = null;
+    }
+
+    document.addEventListener('keydown', e=>{
+        if(e.repeat) return;
+        keys[e.code]=true;
+        if(e.code==='Space'){e.preventDefault(); fire();}
+        if(e.code==='KeyP') paused=!paused;
+    });
+    document.addEventListener('keyup', e=>{keys[e.code]=false;});
+    
+    setInterval(()=>{
+        if(!running || paused) return;
+        const m = player.speed/60;
+        if(keys['ArrowLeft'] || keys['KeyA']) player.x = Math.max(8, player.x-m);
+        if(keys['ArrowRight'] || keys['KeyD']) player.x = Math.min(W-64, player.x+m);
+    }, 16);
+    
+    document.getElementById('btn-start').onclick = begin;
+    document.getElementById('btn-pause').onclick = ()=>{paused=!paused; document.getElementById('btn-pause').textContent = paused ? 'Reanudar' : 'Pausar';};
+    document.getElementById('btn-restart').onclick = begin;
+    document.getElementById('modal-restart').onclick = begin;
+    if(startScreen) startScreen.addEventListener('click', begin);
+    
+    document.querySelectorAll('.diff-btn').forEach(btn=>{
+        btn.onclick = ()=>{
+            curDiff = btn.dataset.diff;
+            document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            begin();
+        };
+    });
+    
+    const tL = document.getElementById('touch-left');
+    const tR = document.getElementById('touch-right');
+    const tF = document.getElementById('touch-fire');
+    if(tL){tL.ontouchstart = (e)=>{e.preventDefault(); keys['tL']=true;}; tL.ontouchend = ()=>{keys['tL']=false;};}
+    if(tR){tR.ontouchstart = (e)=>{e.preventDefault(); keys['tR']=true;}; tR.ontouchend = ()=>{keys['tR']=false;};}
+    if(tF){tF.ontouchstart = (e)=>{e.preventDefault(); fire();};}
+    
+    setInterval(()=>{if(keys['tL']) player.x = Math.max(8, player.x-8); if(keys['tR']) player.x = Math.min(W-64, player.x+8);}, 16);
+    
+    // start screen displayed; don't run game until user begins
+    reset();
+    requestAnimationFrame(loop);
+}
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+else init();
+</script>
+</body>
+</html>

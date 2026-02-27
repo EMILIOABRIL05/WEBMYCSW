@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>NIKO_SYSTEMS: DOOM_EMULATOR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://js-dos.com/v7/build/js-dos.css">
+    <script src="https://js-dos.com/v7/build/js-dos.js"></script>
+    
+    <link rel="stylesheet" href="../src/css/pagina3.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-black text-white font-sans overflow-hidden">
+
+    <div class="flex flex-col items-center justify-center min-h-screen p-4">
+        <h1 class="font-syncopate text-razerGreen text-2xl mb-6 tracking-tighter razer-txt-glow">
+            PROJECT_DOOM_v1.0
+        </h1>
+
+        <div class="relative p-2 bg-razerGrey border-4 border-razerGreen/50 shadow-[0_0_30px_rgba(68,214,44,0.2)]">
+            <div id="dos" class="w-[320px] h-[200px] md:w-[640px] md:h-[400px]"></div>
+            
+            <div id="loader" class="absolute inset-0 flex items-center justify-center bg-black z-10">
+                <p class="font-syncopate text-razerGreen animate-pulse text-xs">INICIALIZANDO_SISTEMA...</p>
+            </div>
+        </div>
+
+        <div class="mt-8 flex gap-4">
+            <button id="startBtn" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-8 py-3 uppercase tracking-widest text-razerGreen">
+                EJECUTAR_DOOM
+            </button>
+            <a href="../index.html" class="border border-white/20 px-8 py-3 text-[10px] font-syncopate uppercase hover:bg-white hover:text-black transition-all">
+                SALIR
+            </a>
+        </div>
+    </div>
+
+    <script src="../src/js/pagina3.js"></script>
+</body>
+</html>
