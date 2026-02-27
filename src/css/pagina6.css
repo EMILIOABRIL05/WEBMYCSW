@@ -102,6 +102,29 @@ body {
     border: 1px solid #00ff00;
     padding: 15px;
     border-radius: 5px;
+    margin-top: 15px;
+}
+
+.system-status {
+    background: #150000;
+    border: 1px solid #ff4444;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.status-message {
+    color: #ff4444;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.status-text {
+    color: #ff6666;
+    font-size: 0.85em;
+    line-height: 1.5;
+    text-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
 }
 
 .progress-label {
