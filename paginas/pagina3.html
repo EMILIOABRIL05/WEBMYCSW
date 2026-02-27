@@ -2,30 +2,37 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Conversor Razer - Niko</title>
+    <title>NIKO_SYSTEMS: DOOM_EMULATOR</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://js-dos.com/v7/build/js-dos.css">
+    <script src="https://js-dos.com/v7/build/js-dos.js"></script>
+    
     <link rel="stylesheet" href="../src/css/pagina3.css">
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-[#050505] text-white font-sans">
-    <div class="container mx-auto px-6 py-20 min-h-screen flex flex-col items-center">
-        <h1 class="font-syncopate text-razerGreen text-3xl mb-10 tracking-tighter">DATA_CONVERTER_V1</h1>
-        
-        <div class="bg-[#111111] p-10 border border-razerGreen/30 w-full max-w-md shadow-2xl">
-            <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Entrada de datos</label>
-            <input type="number" id="inputValue" class="w-full bg-black border border-razerGreen/50 p-3 text-razerGreen focus:outline-none mb-6" placeholder="0.00">
+<body class="bg-black text-white font-sans overflow-hidden">
+
+    <div class="flex flex-col items-center justify-center min-h-screen p-4">
+        <h1 class="font-syncopate text-razerGreen text-2xl mb-6 tracking-tighter razer-txt-glow">
+            PROJECT_DOOM_v1.0
+        </h1>
+
+        <div class="relative p-2 bg-razerGrey border-4 border-razerGreen/50 shadow-[0_0_30px_rgba(68,214,44,0.2)]">
+            <div id="dos" class="w-[320px] h-[200px] md:w-[640px] md:h-[400px]"></div>
             
-            <button id="convertBtn" class="w-full bg-razerGreen text-black font-bold py-3 uppercase tracking-widest hover:bg-white transition-colors">
-                Ejecutar Conversión
-            </button>
-            
-            <div id="resultArea" class="mt-10 p-4 border-t border-white/10 hidden">
-                <span class="text-xs text-gray-500 uppercase">Resultado:</span>
-                <p id="resultValue" class="text-2xl font-syncopate text-razerGreen mt-2">--</p>
+            <div id="loader" class="absolute inset-0 flex items-center justify-center bg-black z-10">
+                <p class="font-syncopate text-razerGreen animate-pulse text-xs">INICIALIZANDO_SISTEMA...</p>
             </div>
         </div>
-        
-        <a href="../index.html" class="mt-10 text-xs text-gray-500 hover:text-razerGreen transition-all uppercase tracking-widest">< Volver al Sistema</a>
+
+        <div class="mt-8 flex gap-4">
+            <button id="startBtn" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-8 py-3 uppercase tracking-widest text-razerGreen">
+                EJECUTAR_DOOM
+            </button>
+            <a href="../index.html" class="border border-white/20 px-8 py-3 text-[10px] font-syncopate uppercase hover:bg-white hover:text-black transition-all">
+                SALIR
+            </a>
+        </div>
     </div>
 
     <script src="../src/js/pagina3.js"></script>

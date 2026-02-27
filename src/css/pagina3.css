@@ -1,21 +1,24 @@
-/* Color personalizado para tu sección */
-:root {
-    --razer-green: #44d62c;
-}
+:root { --razer-green: #44d62c; }
 
 .font-syncopate { font-family: 'Syncopate', sans-serif; }
 
-/* Animación de entrada para el conversor */
-#resultArea {
-    animation: fadeIn 0.5s ease-out;
+/* Efecto de líneas de monitor antiguo (Scanlines) */
+#dos::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+.razer-txt-glow { text-shadow: 0 0 15px var(--razer-green); }
 
-/* Estilo del input al enfocar */
-input:focus {
-    box-shadow: 0 0 10px var(--razer-green);
+.btn-razer {
+    border: 1px solid var(--razer-green);
+    position: relative;
+    overflow: hidden;
 }
