@@ -151,4 +151,183 @@ body::after {
     pointer-events:none; z-index:1000;
 }
 /* matrix effect overlay canvas */
-#easter-egg-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:10000; pointer-events:none; display:none; }
+#easter-egg-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:9997; pointer-events:none; display:none; }
+
+/* overlay de consola 8‑bits estilo Game Boy */
+.console-overlay {
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:480px;
+    height:600px;
+    background: linear-gradient(135deg, #a8b89f 0%, #9da899 100%);
+    border:20px solid #8b8680;
+    border-radius:30px;
+    box-shadow:inset 0 0 20px rgba(0,0,0,0.3), 0 10px 40px rgba(0,0,0,0.8);
+    display:none;
+    z-index:10050;
+    overflow:hidden;
+    font-family:'Courier New',monospace;
+}
+
+/* Game Boy screen area */
+#console-output {
+    background:#2d5016;
+    color:#7fb519;
+    width:100%;
+    height:450px;
+    padding:15px;
+    overflow-y:auto;
+    font-size:13px;
+    line-height:1.6;
+    white-space:pre-wrap;
+    word-wrap:break-word;
+    border:3px solid #5a6e47;
+    box-sizing:border-box;
+    margin:15px;
+    margin-bottom:10px;
+    display:block;
+    box-shadow:inset 0 2px 5px rgba(0,0,0,0.4);
+}
+
+/* input area at bottom */
+.console-overlay > div:last-child {
+    text-align:center;
+    padding:10px;
+    color:#7fb519;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.console-overlay .console-input {
+    background:#2d5016;
+    border:2px solid #5a6e47;
+    color:#7fb519;
+    outline:none;
+    font-family:'Courier New',monospace;
+    font-size:13px;
+    width:85%;
+    padding:8px;
+    margin-top:8px;
+    box-sizing:border-box;
+}
+
+.console-overlay .console-input:focus {
+    box-shadow:0 0 10px rgba(127, 181, 25, 0.5);
+}
+
+/* Game Boy style buttons at bottom */
+.gameboy-buttons {
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    padding:10px;
+    background: linear-gradient(135deg, #a8b89f 0%, #9da899 100%);
+}
+
+.gameboy-button {
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, #e0e0e0, #a0a0a0);
+    border:3px solid #666;
+    box-shadow:inset 0 -3px 5px rgba(0,0,0,0.3), 0 3px 5px rgba(0,0,0,0.3);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    transition:all 0.1s;
+}
+
+.gameboy-button:active {
+    box-shadow:inset 0 2px 3px rgba(0,0,0,0.5), 0 0px 0px rgba(0,0,0,0);
+}
+
+/* frases invisibles en 8 bits */
+.hidden-phrase {
+    position:fixed;
+    font-family:'Courier New',monospace;
+    font-size:20px;
+    color:#44d62c;
+    opacity:0;
+    transition:opacity .3s;
+    pointer-events:none;
+    z-index:10001;
+}
+.hidden-phrase.visible { 
+    opacity:1; 
+    cursor:pointer;
+    pointer-events:auto;
+}
+.hidden-phrase.found { display:none; }
+
+
+/* spotlight (linterna) overlay uses the same canvas; drawing code will darken everything and cut a transparent hole */
+
+/* iconos ocultos para el easter egg */
+.hidden-icon {
+    position:absolute;
+    font-size:32px;
+    color:#111;              /* casi mismo color que el fondo */
+    opacity:0;
+    transition:opacity .2s;
+    pointer-events:none;      /* handled by script */
+}
+.hidden-icon.visible { opacity:1; cursor:pointer; }
+.hidden-icon.found { display:none; }
+
+/* tema secreto tras descubrir todos los iconos */
+body.secret-theme {
+    --green: #ff69b4;    /* rosa brillante por ejemplo */
+    --dark:  #101010;
+}
+
+/* palette adjustments triggered by console commands */
+body.bnw-theme {
+    filter: grayscale(100%);
+}
+
+/* lightoff mode: black screen with spotlight around cursor */
+body.lightoff {
+    cursor: none;
+}
+body.lightoff::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    pointer-events: none;
+    z-index: 9995;
+}
+body.lightoff::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    background: radial-gradient(circle 120px at var(--lx,50%) var(--ly,50%), transparent 0%, black 100%);
+    z-index: 9996;
+}
+
+/* 8bit lantern element */
+.lantern {
+    position: fixed;
+    width: 40px; height: 40px;
+    background: #ffff00;
+    border: 3px solid #000;
+    z-index: 11000;
+    cursor: pointer;
+    font-family: monospace;
+    color: #000;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.8);
+}
+
+/* console overlay styles already exist earlier, ensure they remain */

@@ -46,6 +46,17 @@
 <main class="relative">
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(68,214,44,0.06),transparent_60%)] pointer-events-none"></div>
 
+    <!-- frases ocultas (binario 8‑bits) que se revelan bajo la linterna -->
+    <div class="hidden-phrase" style="position:fixed; top:25%; left:20%;">01001000 01101001</div>
+    <div class="hidden-phrase" style="position:fixed; top:60%; left:70%;">01101100 01101111</div>
+    <div class="hidden-phrase" style="position:fixed; top:40%; left:45%;">01100101 01111000 01101001 01110100</div>
+
+    <!-- consola 8‑bits que aparece tras la lluvia matrix - Game Boy style -->
+    <div id="easter-console" class="console-overlay hidden">
+        <div id="console-output"></div>
+        <div><span>&gt;</span><input id="console-input" class="console-input" disabled /></div>
+    </div>
+
     <div class="relative z-10 max-w-screen-xl mx-auto px-4 pt-8">
 
         <div class="text-center mb-6" data-aos="fade-down">

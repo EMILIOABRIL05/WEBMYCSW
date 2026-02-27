@@ -19,12 +19,21 @@ const SYM    = { hearts:'&#9829;', diamonds:'&#9830;', clubs:'&#9827;', spades:'
 const SYMTX  = { hearts:'\u2665', diamonds:'\u2666', clubs:'\u2663', spades:'\u2660' };
 const VALUES = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
 
+// easter‑egg config
+const FLASH_RADIUS = 100;            // radius of flashlight hole
+let foundCount = 0;                  // number of phrases/icons found
+
 /* ============================================================
    ESTADO
    ============================================================ */
 let stockArr=[], wasteArr=[], found=[[],[],[],[]], tab=[[],[],[],[],[],[],[]];
 let moves=0, score=0, redraws=0, timerSecs=0, timerID=null, gameOver=false;
 let history=[];
+
+// state for easter‑egg keyboard handling
+let keysPressed = {};
+let flashlightActive = false; // true while phrase hunt/console is active
+
 
 /* ============================================================
    UTILIDADES
@@ -430,21 +439,231 @@ document.getElementById('waste-zone').addEventListener('dblclick',()=>{
 });
 
 /* ============================================================
-   EASTER EGG - ANONYMOUS MATRIX EFFECT
+   EASTER EGG - FLASHLIGHT HUNT (matrix effect removed)
    ============================================================ */
-let keysPressed = {};
-document.addEventListener('keydown', e => {
-    keysPressed[e.key] = true;
+// genera lluvia matrix sobre el canvas y retorna Promise al terminar
+function matrixEffect(duration=3000){
+    return new Promise(resolve=>{
+        const canvas = document.getElementById('easter-egg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.style.display = 'block';
+        
+        const chars = '01ｦｧｨｩｪｫｬｭｮｯﾰﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾆﾈﾉﾊﾋﾌﾍﾌﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾙﾜﾝ█';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        let drops = [];
+        for(let x = 0; x < columns; x++) drops[x] = Math.random() * canvas.height;
+        const startTime = Date.now();
+        function draw(){
+            ctx.fillStyle = 'rgba(5, 15, 5, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#44d62c';
+            ctx.font = fontSize+'px monospace';
+            for(let x=0;x<drops.length;x++){
+                const char = chars[Math.floor(Math.random()*chars.length)];
+                ctx.fillText(char, x*fontSize, drops[x]);
+                drops[x] += fontSize;
+                if(drops[x] > canvas.height) drops[x] = Math.random()*canvas.height;
+            }
+            if(Date.now() - startTime < duration){
+                requestAnimationFrame(draw);
+            } else {
+                // Keep matrix background visible - lower z-index so it's behind the gameboy
+                canvas.style.zIndex = '100';
+                canvas.style.pointerEvents = 'none';
+                resolve();
+            }
+        }
+        draw();
+    });
+}
+
+let consoleUnlocked = false;
+
+function showConsoleOverlay(msg){
+    const cons = document.getElementById('easter-console');
+    const out = document.getElementById('console-output');
+    out.textContent = msg||'';
+    cons.classList.remove('hidden');
+    cons.style.display = 'block';          // force visible even though .console-overlay hides by default
+}
+
+function hideConsoleOverlay(){
+    const cons = document.getElementById('easter-console');
+    cons.classList.add('hidden');
+    cons.style.display = 'none';
     
-    // Detectar Ctrl+Alt+A para activar el efecto Matrix
-    if(keysPressed['Control'] && keysPressed['Alt'] && e.key === 'a'){
-        playMatrixEasterEgg();
+    // Clean up matrix background
+    const canvas = document.getElementById('easter-egg-canvas');
+    canvas.style.display = 'none';
+    canvas.style.zIndex = '9997';
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function unlockConsole(){
+    consoleUnlocked = true;
+    const cons = document.getElementById('easter-console');
+    if(cons) cons.style.pointerEvents = 'auto';
+    const inp = document.getElementById('console-input');
+    inp.disabled = false;
+    inp.focus();
+    const out = document.getElementById('console-output');
+    // Only add instructions if this is the initial unlock
+    if(!out.textContent.includes('CONSOLE UNLOCKED')){
+        out.textContent += '\n# CONSOLE UNLOCKED — type command (exit to leave)\n';
+        out.textContent += '\n# AVAILABLE COMMANDS: Lightoff, ColorBNW, Color, Neofetch, Exit\n';
+    }
+}
+
+// nueva búsqueda de frases bajo linterna
+/* ============================================================
+   LIGHTOFF / PHRASE HUNT SYSTEM
+   ============================================================ */
+let _phraseHuntActive = false;
+let _phraseHuntMoveHandler = null;
+let _phraseHuntClickHandler = null;
+
+function handlePhraseHuntMove(e){
+    // Update spotlight position
+    document.body.style.setProperty('--lx', e.clientX + 'px');
+    document.body.style.setProperty('--ly', e.clientY + 'px');
+    
+    // Show/hide phrases based on distance to cursor
+    const phrases = Array.from(document.querySelectorAll('.hidden-phrase'));
+    phrases.forEach(el=>{
+        if(el.classList.contains('found')) return;
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dist = Math.hypot(e.clientX-cx, e.clientY-cy);
+        if(dist < FLASH_RADIUS) el.classList.add('visible');
+        else el.classList.remove('visible');
+    });
+}
+
+function handlePhraseHuntClick(e){
+    const phrases = Array.from(document.querySelectorAll('.hidden-phrase'));
+    let foundOne = false;
+    phrases.forEach(el=>{
+        if(el.classList.contains('found')) return;
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dist = Math.hypot(e.clientX-cx, e.clientY-cy);
+        if(dist < FLASH_RADIUS){
+            el.classList.add('found');
+            el.classList.remove('visible');
+            foundOne = true;
+            const foundCount = document.querySelectorAll('.hidden-phrase.found').length;
+            if(foundCount >= phrases.length){
+                // all phrases found
+                endPhraseHunt();
+            }
+        }
+    });
+}
+
+function startPhraseHunt(){
+    if(_phraseHuntActive) return;  // Prevent multiple activations
+    _phraseHuntActive = true;
+    flashlightActive = true;
+    
+    // Activate lightoff mode (CSS handles spotlight)
+    document.body.classList.add('lightoff');
+    
+    // Create lantern
+    const existingLantern = document.getElementById('lantern');
+    if(existingLantern) existingLantern.remove();
+    createLantern();
+    
+    // Hide console overlay and block input temporarily
+    hideConsoleOverlay();
+    const cons = document.getElementById('easter-console');
+    if(cons) cons.style.pointerEvents = 'none';
+    const consInput = document.getElementById('console-input');
+    if(consInput) consInput.disabled = true;
+
+    // Reset phrases visibility
+    const phrases = Array.from(document.querySelectorAll('.hidden-phrase'));
+    phrases.forEach(p=>{ p.classList.remove('found','visible'); });
+    
+    // Add event listeners with stored references
+    _phraseHuntMoveHandler = handlePhraseHuntMove;
+    _phraseHuntClickHandler = handlePhraseHuntClick;
+    window.addEventListener('mousemove', _phraseHuntMoveHandler);
+    window.addEventListener('click', _phraseHuntClickHandler);
+}
+
+function endPhraseHunt(){
+    if(!_phraseHuntActive) return;
+    _phraseHuntActive = false;
+    
+    // Clean up event listeners using stored references
+    if(_phraseHuntMoveHandler) window.removeEventListener('mousemove', _phraseHuntMoveHandler);
+    if(_phraseHuntClickHandler) window.removeEventListener('click', _phraseHuntClickHandler);
+    _phraseHuntMoveHandler = null;
+    _phraseHuntClickHandler = null;
+    
+    // Clean up lightoff state
+    document.body.classList.remove('lightoff');
+    
+    const lantern = document.getElementById('lantern');
+    if(lantern) lantern.remove();
+    
+    // Reset canvas to background
+    const canvas = document.getElementById('easter-egg-canvas');
+    if(canvas){
+        canvas.style.zIndex = '100';
+        canvas.style.pointerEvents = 'none';
+        canvas.style.display = 'block';
+    }
+    
+    flashlightActive = false;
+    
+    // Re-enable console and show overlay
+    const consInput = document.getElementById('console-input');
+    if(consInput) consInput.disabled = false;
+    const cons = document.getElementById('easter-console');
+    if(cons){
+        cons.style.pointerEvents = 'auto';
+        showConsoleOverlay(document.getElementById('console-output').textContent);
+    }
+    
+    unlockConsole();
+}
+
+function startEasterSequence(){
+    // comenzar lluvia matrix y luego mostrar consola
+    matrixEffect(3000).then(()=>{
+        // convert plain text to 8‑bit binary strings
+        const toBin = txt => txt.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' ');
+        const msg = '# ' + toBin('MATRIX COMPLETE');
+        showConsoleOverlay(msg);
+        unlockConsole();
+    });
+}
+
+document.addEventListener('keydown', e => {
+    // keep track of individual keys (used by other parts of code and for debugging)
+    keysPressed[e.key] = true;
+
+    // use modifier properties instead of relying solely on key map
+    // and normalize the letter to lower case so layout/shift doesn't matter
+    // some layouts expose the right Alt key as AltGraph; treat it as Alt as well
+    const altPressed = e.altKey || e.getModifierState('AltGraph');
+    if(!flashlightActive && !consoleUnlocked && e.ctrlKey && altPressed && e.key.toLowerCase() === 'a'){
+        startEasterSequence();
     }
 });
+
 document.addEventListener('keyup', e => {
     keysPressed[e.key] = false;
 });
 
+/* matrix easter egg disabled - replaced by flashlight hunt */
 function playMatrixEasterEgg(){
     const canvas = document.getElementById('easter-egg-canvas');
     const ctx = canvas.getContext('2d');
@@ -531,6 +750,77 @@ function playMatrixEasterEgg(){
     drawMatrix();
 }
 
+// flash light easter egg implementation
+function startFlashlightEasterEgg(){
+    flashlightActive = true;
+    foundCount = 0;
+    const canvas = document.getElementById('easter-egg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.display = 'block';
+    canvas.style.pointerEvents = 'auto';
+
+    const icons = Array.from(document.querySelectorAll('.hidden-icon'));
+    icons.forEach(i=>{ i.classList.remove('found','visible'); });
+
+    function draw(x,y){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = 'rgba(0,0,0,0.96)';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x,y,FLASH_RADIUS,0,Math.PI*2);
+        ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+    }
+
+    function onMove(e){
+        draw(e.clientX,e.clientY);
+        icons.forEach(icon=>{
+            if(icon.classList.contains('found')) return;
+            const rect = icon.getBoundingClientRect();
+            const cx = rect.left + rect.width/2;
+            const cy = rect.top + rect.height/2;
+            const dist = Math.hypot(e.clientX-cx, e.clientY-cy);
+            if(dist < FLASH_RADIUS) icon.classList.add('visible');
+            else icon.classList.remove('visible');
+        });
+    }
+
+    function onClick(e){
+        icons.forEach(icon=>{
+            if(icon.classList.contains('found')) return;
+            const rect = icon.getBoundingClientRect();
+            const cx = rect.left + rect.width/2;
+            const cy = rect.top + rect.height/2;
+            const dist = Math.hypot(e.clientX-cx, e.clientY-cy);
+            if(dist < FLASH_RADIUS){
+                icon.classList.add('found');
+                icon.classList.remove('visible');
+                foundCount++;
+                if(foundCount >= 3) endFlashlightEasterEgg();
+            }
+        });
+    }
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('click', onClick);
+    canvas._flashHandlers = {onMove,onClick};
+}
+
+function endFlashlightEasterEgg(){
+    const canvas = document.getElementById('easter-egg-canvas');
+    canvas.style.display = 'none';
+    canvas.style.pointerEvents = 'none';
+    const handlers = canvas._flashHandlers || {};
+    if(handlers.onMove) window.removeEventListener('mousemove', handlers.onMove);
+    if(handlers.onClick) window.removeEventListener('click', handlers.onClick);
+    flashlightActive = false;
+    document.body.classList.add('secret-theme');
+    showToast('¡Has descubierto el secreto!');
+}
+
 // Ajustar canvas al redimensionar ventana
 window.addEventListener('resize', () => {
     const canvas = document.getElementById('easter-egg-canvas');
@@ -539,6 +829,107 @@ window.addEventListener('resize', () => {
         canvas.height = window.innerHeight;
     }
 });
+
+// manejador de la consola 8bit
+const consInput = document.getElementById('console-input');
+if(consInput){
+    consInput.addEventListener('keydown', e=>{
+        if(e.key === 'Enter'){
+            const val = e.target.value.trim();
+            const out = document.getElementById('console-output');
+            out.textContent += '\n> '+val;
+            out.scrollTop = out.scrollHeight;
+            e.target.value = '';
+            const cmd = val.toLowerCase();
+            switch(cmd){
+                case 'exit':
+                    hideConsoleOverlay();
+                    window.location.href = '../index.html';
+                    break;
+                case 'colorbnw':
+                    document.body.classList.add('bnw-theme');
+                    out.textContent += '\n# COLORS -> BLACK & WHITE';
+                    break;
+                case 'color':
+                    document.body.classList.remove('bnw-theme');
+                    out.textContent += '\n# COLORS -> NORMAL';
+                    break;
+                case 'lightoff':
+                    startPhraseHunt();
+                    out.textContent += '\n# LIGHTOFF MODE ACTIVATED - find the 8bit lantern';
+                    break;
+                case 'neofetch':
+                    out.textContent += '\n' +
+`  __   __       _ __ _      __        __  ___   ` +
+`  \ \ / /__ _ _| / _| |_ ___\ \      / / / _ \  ` +
+`   \ V / _ \ '_| \_ \  _/ -_)\ \ /\ / / | (_) | ` +
+`    \_/\___/_| |_|__/\__\___| \_/  \_/   \___/  ` +
+`                                               ` +
+`\n# neofetch: Windows logo displayed`; 
+                    break;
+                default:
+                    out.textContent += '\n# COMMAND UNKNOWN';
+            }
+            out.scrollTop = out.scrollHeight;
+        }
+    });
+}
+
+/* ============================================================
+   LIGHTOFF / COLOR COMMAND SUPPORT
+   ============================================================ */
+function updateSpot(e){
+    document.body.style.setProperty('--lx', e.clientX+'px');
+    document.body.style.setProperty('--ly', e.clientY+'px');
+}
+
+function restoreMatrixBackground(){
+    const canvas = document.getElementById('easter-egg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const chars = '01ｦｧｨｩｪｫｬｭｮｯﾰﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾆﾈﾉﾊﾋﾌﾍﾌﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾙﾜﾝ█';
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    let drops = [];
+    for(let x = 0; x < columns; x++) drops[x] = Math.random() * canvas.height;
+    
+    // Draw single frame of matrix rain
+    ctx.fillStyle = 'rgba(5, 15, 5, 0.1)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#44d62c';
+    ctx.font = fontSize+'px monospace';
+    for(let x=0;x<drops.length;x++){
+        const char = chars[Math.floor(Math.random()*chars.length)];
+        ctx.fillText(char, x*fontSize, drops[x]);
+        drops[x] += fontSize;
+        if(drops[x] > canvas.height) drops[x] = 0;
+    }
+}
+
+function createLantern(){
+    const lantern = document.createElement('div');
+    lantern.id = 'lantern';
+    lantern.className = 'lantern';
+    lantern.textContent = '🔦';
+    const size = 40;
+    const x = Math.random()*(window.innerWidth - size);
+    const y = Math.random()*(window.innerHeight - size);
+    lantern.style.left = x + 'px';
+    lantern.style.top  = y + 'px';
+    document.body.appendChild(lantern);
+    lantern.addEventListener('click', ()=>{
+        // End the flashlight hunt cleanly
+        endPhraseHunt();
+        
+        // Restore matrix background
+        restoreMatrixBackground();
+        
+        const out = document.getElementById('console-output');
+        if(out) out.textContent += '\n# LANTERN FOUND - NORMALITY RESTORED';
+    });
+}
 
 /* ============================================================
    ARRANCAR
