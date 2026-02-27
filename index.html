@@ -200,22 +200,41 @@
         </div>
 
             <!-- Integrante 4 -->
-            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
-                data-aos="fade-up" data-aos-delay="300">
-                <div
-                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden">
-                    <img src="./src/img/Luis.png" alt="Luis Miranda"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
-                </div>
-                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Luis Miranda</h3>
-                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Retro Gaming Developer</p>
-                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Creador del clásico Space Invaders 8-bit. Defiende la Tierra con precisión arcade y estilo retro."</p>
-
-                <div class="text-center">
-                    <a href="./paginas/pagina4.html"
-                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
-                        Jugar Space Invaders
-                    </a>
+            <div class="group h-[450px] [perspective:1000px]" data-aos="fade-up" data-aos-delay="300">
+                <div class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                    
+                    <div class="absolute inset-0 bg-razerGrey border border-white/10 p-8 rounded-sm flex flex-col items-center justify-center [backface-visibility:hidden]">
+                        <div class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden flex items-center justify-center">
+                            <img src="./src/img/Luis.png" alt="Luis Miranda" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
+                        </div>
+                        
+                        <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen tracking-tighter uppercase">LUIS MIRANDA</h3>
+                        <p class="text-center text-gray-500 text-[10px] uppercase tracking-widest mb-6 font-syncopate">Retro Gaming Developer</p>
+                        
+                        <div class="flex items-center gap-2 text-razerGreen/40 font-syncopate text-[8px] animate-pulse">
+                            <span>VER_EXPEDIENTE</span>
+                            <div class="w-1 h-1 bg-razerGreen rounded-full"></div>
+                        </div>
+                    </div>
+            
+                    <div class="absolute inset-0 h-full w-full bg-razerDark border border-razerGreen/50 p-8 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col justify-center">
+                        <div class="mb-4 flex justify-between items-center border-b border-razerGreen/20 pb-2">
+                            <h3 class="font-syncopate text-[10px] text-razerGreen uppercase">EXPEDIENTE_LUIS_MIRANDA</h3>
+                            <div class="w-2 h-2 bg-razerGreen shadow-[0_0_5px_#44d62c]"></div>
+                        </div>
+                        
+                        <p class="text-gray-300 text-[11px] leading-relaxed italic mb-8 font-sans">
+                            "¡Hola! Soy un apasionado de la tecnología de 21 años radicado en Ecuador. Actualmente, curso la carrera de Ingeniería de Software en la Universidad Técnica de Ambato, donde me especializo en el desarrollo de lenguajes de dominio específico (DSL) y el metamodelado con herramientas como Eclipse (EMF, Xtext). Mi día a día transcurre entre líneas de código en Java y Python, la precisión de los reportes en LaTeX y el análisis estadístico aplicado al software. Pero mi curiosidad no se detiene en la pantalla: también soy un apasionado a los videojuegos y a la ropa"
+                        </p>
+            
+                        <div class="text-center">
+                            <a href="./paginas/pagina4.html"
+                                class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-6 py-3 uppercase tracking-widest inline-block text-razerGreen border border-razerGreen/30 hover:border-razerGreen transition-all">
+                                JUGAR_SPACE_INVADERS
+                            </a>
+                        </div>
+                    </div>
+            
                 </div>
             </div>
 
