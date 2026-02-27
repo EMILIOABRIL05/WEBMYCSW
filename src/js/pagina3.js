@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let spawnTimer;
     const keys = ['KeyA', 'KeyS', 'KeyD', 'KeyF'];
 
-    // --- LÓGICA DEL JUEGO (NEON RHYTHM) ---
+    // --- LÓGICA DEL JUEGO (NEON RHYTHM) ---s
 
     function createNote() {
         if (!gameActive) return;

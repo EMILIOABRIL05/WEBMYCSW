@@ -430,6 +430,117 @@ document.getElementById('waste-zone').addEventListener('dblclick',()=>{
 });
 
 /* ============================================================
+   EASTER EGG - ANONYMOUS MATRIX EFFECT
+   ============================================================ */
+let keysPressed = {};
+document.addEventListener('keydown', e => {
+    keysPressed[e.key] = true;
+    
+    // Detectar Ctrl+Alt+A para activar el efecto Matrix
+    if(keysPressed['Control'] && keysPressed['Alt'] && e.key === 'a'){
+        playMatrixEasterEgg();
+    }
+});
+document.addEventListener('keyup', e => {
+    keysPressed[e.key] = false;
+});
+
+function playMatrixEasterEgg(){
+    const canvas = document.getElementById('easter-egg-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Configurar canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.display = 'block';
+    
+    // Texto "HACK" 8-bits más claro
+    const anonymousMask = [
+        'X   X  XXXXX  X X X X X   X  ',
+        'X   X  X      X X X X X X  X  ',
+        'X X X  X X X  X X X X X X  X  ',
+        'XXXXX  X      XXXXX   X XXXXX  ',
+        'X   X  X      X X X X X X      ',
+        'X   X  X      X X X X X X      ',
+        'X   X  XXXXX  X   X X X X   X  '
+    ];
+    
+    // Variables para la lluvia
+    const chars = '01ｦｧｨｩｪｫｬｭｮｯﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾆﾈﾉﾊﾋﾌﾍﾌﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾙﾜﾝ█';
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    let drops = [];
+    
+    // Inicializar gotas
+    for(let x = 0; x < columns; x++){
+        drops[x] = Math.random() * canvas.height;
+    }
+    
+    let frameCount = 0;
+    const duration = 4000; // 4 segundos
+    const startTime = Date.now();
+    
+    function drawMatrix(){
+        // Fondo semi-transparente
+        ctx.fillStyle = 'rgba(5, 15, 5, 0.1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Dibujar lluvia Matrix
+        ctx.fillStyle = '#44d62c';
+        ctx.font = fontSize + 'px monospace';
+        
+        for(let x = 0; x < drops.length; x++){
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(char, x * fontSize, drops[x]);
+            
+            drops[x] += fontSize;
+            
+            if(drops[x] > canvas.height){
+                drops[x] = Math.random() * canvas.height;
+            }
+        }
+        
+        // Dibujar máscara Anonymous centrada
+        /*
+        const maskWidth = Math.max(...anonymousMask.map(r => r.length)) * 14;
+        const maskX = (canvas.width - maskWidth) / 2;
+        const maskY = (canvas.height - anonymousMask.length * 18) / 2;
+        
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 18px monospace';
+        anonymousMask.forEach((row, i) => {
+            let pixelRow = '';
+            for(let j = 0; j < row.length; j++){
+                pixelRow += (row[j] === 'X' ? '█' : ' ');
+            }
+            ctx.fillText(pixelRow, maskX, maskY + i * 18);
+        });
+        */
+        
+        frameCount++;
+        
+        // Continuar si no ha pasado el tiempo
+        if(Date.now() - startTime < duration){
+            requestAnimationFrame(drawMatrix);
+        } else {
+            canvas.style.display = 'none';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+    
+    drawMatrix();
+}
+
+// Ajustar canvas al redimensionar ventana
+window.addEventListener('resize', () => {
+    const canvas = document.getElementById('easter-egg-canvas');
+    if(canvas.style.display !== 'none'){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+});
+
+/* ============================================================
    ARRANCAR
    ============================================================ */
 startGame();
