@@ -34,51 +34,33 @@
     </script>
 
     <style>
-        /* Reset y Scroll suave */
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
+        body { background-color: #050505; color: white; }
 
-        body {
-            background-color: #050505;
-            color: white;
-        }
-
-        /* --- CORRECCIONES DE COLOR PARA HOVER.CSS --- */
-        /* Cambia el color celeste/azul por Verde Razer en animaciones de fondo */
-        .hvr-sweep-to-right:before,
-        .hvr-bounce-to-right:before,
-        .hvr-shutter-out-horizontal:before {
+        .hvr-sweep-to-right:before, .hvr-bounce-to-right:before, .hvr-shutter-out-horizontal:before {
             background: #44d62c !important;
         }
 
-        /* Texto negro cuando el fondo se vuelve verde */
-        .hvr-sweep-to-right:hover,
-        .hvr-bounce-to-right:hover,
-        .hvr-shutter-out-horizontal:hover {
+        .hvr-sweep-to-right:hover, .hvr-bounce-to-right:hover, .hvr-shutter-out-horizontal:hover {
             color: #000000 !important;
         }
 
-        /* Línea de subrayado en Verde Razer */
         .hvr-underline-from-center:before {
             background: #44d62c !important;
             height: 2px;
         }
 
-        /* Estilo de botón personalizado Razer */
-        .btn-razer {
-            border: 1px solid #44d62c;
-            transition: all 0.3s ease;
-        }
+        .btn-razer { border: 1px solid #44d62c; transition: all 0.3s ease; }
+        .btn-razer:hover { box-shadow: 0 0 20px rgba(68, 214, 44, 0.6); }
+        .razer-txt-glow { text-shadow: 0 0 10px rgba(68, 214, 44, 0.5); }
 
-        .btn-razer:hover {
-            box-shadow: 0 0 20px rgba(68, 214, 44, 0.6);
+        /* Estilos para el efecto Flip Card */
+        .[backface-visibility\:hidden] {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
-
-        /* Texto con brillo neón */
-        .razer-txt-glow {
-            text-shadow: 0 0 10px rgba(68, 214, 44, 0.5);
-        }
+        .[transform-style\:preserve-3d] { transform-style: preserve-3d; }
+        .[perspective\:1000px] { perspective: 1000px; }
     </style>
 </head>
 
@@ -86,199 +68,146 @@
 
     <nav class="bg-black/95 border-b border-razerGreen/20 sticky top-0 z-50 backdrop-blur-md">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="font-syncopate text-xl font-bold tracking-widest text-razerGreen razer-txt-glow">
-                TEAM_NIKO
-            </div>
-
+            <div class="font-syncopate text-xl font-bold tracking-widest text-razerGreen razer-txt-glow">TEAM_NIKO</div>
             <ul class="hidden md:flex space-x-8 font-syncopate text-[10px] uppercase tracking-[0.2em]">
                 <li><a href="index.html" class="hvr-underline-from-center py-2 text-razerGreen">Inicio</a></li>
-                <li><a href="./paginas/pagina1.html"
-                        class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Minijuegos / PML</a>
-                </li>
-                <li><a href="./paginas/pagina2.html"
-                        class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Solitario</a></li>
-
-                 </li>
-                <li><a href="./paginas/pagina5.html"
-                        class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Tres en raya</a></li>
-                
+                <li><a href="./paginas/pagina1.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Minijuegos / PML</a></li>
+                <li><a href="./paginas/pagina2.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Solitario</a></li>
+                <li><a href="./paginas/pagina5.html" class="hvr-underline-from-center py-2 hover:text-razerGreen transition">Tres en raya</a></li>
             </ul>
-
             <div class="hidden md:block">
-                <a href="#equipo"
-                    class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase tracking-widest">
-                    Ver Equipo
-                </a>
+                <a href="#equipo" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase tracking-widest">Ver Equipo</a>
             </div>
         </div>
     </nav>
 
     <header class="relative h-[80vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-        <div
-            class="absolute w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-razerGreen/10 via-transparent to-transparent opacity-50">
-        </div>
-
-        <h1 class="font-syncopate text-4xl md:text-7xl font-bold mb-6 tracking-tighter razer-txt-glow"
-            data-aos="zoom-in">
+        <div class="absolute w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-razerGreen/10 via-transparent to-transparent opacity-50"></div>
+        <h1 class="font-syncopate text-4xl md:text-7xl font-bold mb-6 tracking-tighter razer-txt-glow" data-aos="zoom-in">
             COLECCIÓN <span class="text-razerGreen">RAZER NIKO</span>
         </h1>
-        <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl mb-10 uppercase tracking-[0.3em] font-sans"
-            data-aos="fade-up" data-aos-delay="200">
-            Siente el fuego del código
-        </p>
+        <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl mb-10 uppercase tracking-[0.3em]" data-aos="fade-up" data-aos-delay="200">Siente el fuego del código</p>
         <div data-aos="fade-up" data-aos-delay="400">
-            <button
-                class="hvr-bounce-to-right btn-razer font-syncopate text-xs tracking-[0.2em] px-10 py-4 uppercase font-bold">
-                Más Información >
-            </button>
+            <button class="hvr-bounce-to-right btn-razer font-syncopate text-xs tracking-[0.2em] px-10 py-4 uppercase font-bold">Más Información ></button>
         </div>
     </header>
 
     <main id="equipo" class="container mx-auto px-6 py-20">
-        <h2
-            class="font-syncopate text-2xl text-center mb-16 tracking-widest uppercase border-b border-razerGreen/30 pb-4 inline-block w-full">
-            Nuestros Integrantes
-        </h2>
+        <h2 class="font-syncopate text-2xl text-center mb-16 tracking-widest uppercase border-b border-razerGreen/30 pb-4 inline-block w-full">Nuestros Integrantes</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <!-- Integrante 1 (Emilio) -->
-            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
-                data-aos="fade-up">
-                <div
-                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden">
-                    <img src="./src/img/emilio.jpg" alt="Emilio"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
-                </div>
-                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Emilio</h3>
-                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Frontend Integrator</p>
-                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Creador del Precision Metrics
-                    Lab (PML). Entrena tus reflejos y conviértete en el mejor."</p>
 
-                <div class="text-center">
-                    <a href="./paginas/pagina1.html"
-                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
-                        Probar PML
-                    </a>
+            <div class="group h-[450px] [perspective:1000px]" data-aos="fade-up">
+                <div class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                    <div class="absolute inset-0 bg-razerGrey border border-white/10 p-8 rounded-sm flex flex-col items-center justify-center [backface-visibility:hidden]">
+                        <img src="./src/img/emilio.jpg" alt="Emilio" class="w-24 h-24 bg-razerDark border-2 border-razerGreen rounded-full object-cover grayscale group-hover:grayscale-0 transition-all mb-6">
+                        <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Emilio</h3>
+                        <p class="text-gray-500 text-[10px] uppercase font-syncopate">Frontend Integrator</p>
+                        <div class="mt-6 flex items-center gap-2 text-razerGreen/40 font-syncopate text-[10px] animate-pulse">
+                            <span>INFO_DETALLADA</span><div class="w-1 h-1 bg-razerGreen rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 h-full w-full bg-razerDark border border-razerGreen/50 p-8 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col justify-center text-center">
+                        <h3 class="font-syncopate text-[10px] text-razerGreen uppercase mb-4">Expediente_Emilio</h3>
+                        <p class="text-gray-300 text-[11px] italic mb-6">"Creador del Precision Metrics Lab (PML). Especialista en la integración de métricas de rendimiento y optimización de interfaces dinámicas."</p>
+                        <a href="./paginas/pagina1.html" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase text-razerGreen">Probar PML</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Integrante 2 -->
-            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
-                data-aos="fade-up" data-aos-delay="100">
-                <div class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden">
-                    <img src="./src/img/manolo.jpg" alt="Manolo" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
-                </div>
-                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Manolo</h3>
-                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Frontend Developer</p>
-                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Desarrollador del clásico
-                    Solitario con un toque moderno y competitivo estilo Razer."</p>
-
-                <div class="text-center">
-                    <a href="./paginas/pagina2.html"
-                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
-                        Jugar Solitario
-                    </a>
+            <div class="group h-[450px] [perspective:1000px]" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                    <div class="absolute inset-0 bg-razerGrey border border-white/10 p-8 rounded-sm flex flex-col items-center justify-center [backface-visibility:hidden]">
+                        <img src="./src/img/manolo.jpg" alt="Manolo" class="w-24 h-24 bg-razerDark border-2 border-razerGreen rounded-full object-cover grayscale group-hover:grayscale-0 transition-all mb-6">
+                        <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Manolo</h3>
+                        <p class="text-gray-500 text-[10px] uppercase font-syncopate">Frontend Developer</p>
+                        <div class="mt-6 flex items-center gap-2 text-razerGreen/40 font-syncopate text-[10px] animate-pulse">
+                            <span>INFO_DETALLADA</span><div class="w-1 h-1 bg-razerGreen rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 h-full w-full bg-razerDark border border-razerGreen/50 p-8 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col justify-center text-center">
+                        <h3 class="font-syncopate text-[10px] text-razerGreen uppercase mb-4">Expediente_Manolo</h3>
+                        <p class="text-gray-300 text-[11px] italic mb-6">"Desarrollador del Solitario Clásico. Experto en transformar juegos tradicionales en experiencias modernas con un toque competitivo."</p>
+                        <a href="./paginas/pagina2.html" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase text-razerGreen">Jugar Solitario</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Integrante 3 -->
             <div class="group h-[450px] [perspective:1000px]" data-aos="fade-up" data-aos-delay="200">
                 <div class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-                    
                     <div class="absolute inset-0 bg-razerGrey border border-white/10 p-8 rounded-sm flex flex-col items-center justify-center [backface-visibility:hidden]">
-                        <div class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden flex items-center justify-center">
-                            <img src="./src/img/kevin.png" alt="Kevin" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
-                        </div>
-                        
-                        <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen tracking-tighter uppercase">KEVIN</h3>
-                        <p class="text-center text-gray-500 text-[10px] uppercase tracking-widest mb-6 font-syncopate">Logic Architect</p>
-                        
-                        <div class="flex items-center gap-2 text-razerGreen/40 font-syncopate text-[8px] animate-pulse">
-                            <span>INFO_DETALLADA</span>
-                            <div class="w-1 h-1 bg-razerGreen rounded-full"></div>
+                        <img src="./src/img/kevin.png" alt="Kevin" class="w-24 h-24 bg-razerDark border-2 border-razerGreen rounded-full object-cover grayscale group-hover:grayscale-0 transition-all mb-6">
+                        <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen uppercase tracking-tighter">KEVIN</h3>
+                        <p class="text-gray-500 text-[10px] uppercase font-syncopate">Logic Architect</p>
+                        <div class="mt-6 flex items-center gap-2 text-razerGreen/40 font-syncopate text-[10px] animate-pulse">
+                            <span>INFO_DETALLADA</span><div class="w-1 h-1 bg-razerGreen rounded-full"></div>
                         </div>
                     </div>
-            
                     <div class="absolute inset-0 h-full w-full bg-razerDark border border-razerGreen/50 p-8 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col justify-center">
                         <div class="mb-4 flex justify-between items-center border-b border-razerGreen/20 pb-2">
-                            <h3 class="font-syncopate text-[10px] text-razerGreen uppercase">EXPEDIENTE_KEVIN</h3>
+                            <h3 class="font-syncopate text-[10px] text-razerGreen uppercase">Expediente_Kevin</h3>
                             <div class="w-2 h-2 bg-razerGreen shadow-[0_0_5px_#44d62c]"></div>
                         </div>
-                        
                         <p class="text-gray-300 text-[11px] leading-relaxed italic mb-8 font-sans">
-                            "Como Arquitecto de Lógica del TEAM_NIKO, me especialicé en el desarrollo de entornos interactivos de alto rendimiento. Diseñé el motor 'Neon Rhythm V1', implementando ciclos de renderizado optimizados mediante requestAnimationFrame y aceleración por hardware. Mi enfoque principal fue garantizar una latencia de entrada mínima, logrando una experiencia visual estable y fluida de 60 FPS dentro de una estética neón avanzada."
+                            "Persona seria y enfocada hacia los desafíos que exigen precisión. Desarrollé el motor 'Neon Rhythm V1', logrando un sistema de renderizado fluido mediante requestAnimationFrame y garantizando una latencia mínima."
                         </p>
-            
                         <div class="text-center">
-                            <a href="./paginas/pagina3.html"
-                                class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-6 py-3 uppercase tracking-widest inline-block text-razerGreen border border-razerGreen/30 hover:border-razerGreen transition-all">
-                                ACCEDER_AL_SISTEMA
-                            </a>
+                            <a href="./paginas/pagina3.html" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-6 py-3 uppercase text-razerGreen">Acceder al Sistema</a>
                         </div>
                     </div>
-            
                 </div>
             </div>
 
-            <!-- Integrante 4 -->
-            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
-                data-aos="fade-up" data-aos-delay="300">
-                <div
-                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden">
-                    <img src="./src/img/Luis.png" alt="Luis Miranda"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
-                </div>
-                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Luis Miranda</h3>
-                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Retro Gaming Developer</p>
-                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Creador del clásico Space Invaders 8-bit. Defiende la Tierra con precisión arcade y estilo retro."</p>
-
-                <div class="text-center">
-                    <a href="./paginas/pagina4.html"
-                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
-                        Jugar Space Invaders
-                    </a>
+            <div class="group h-[450px] [perspective:1000px]" data-aos="fade-up" data-aos-delay="300">
+                <div class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                    <div class="absolute inset-0 bg-razerGrey border border-white/10 p-8 rounded-sm flex flex-col items-center justify-center [backface-visibility:hidden]">
+                        <img src="./src/img/Luis.png" alt="Luis" class="w-24 h-24 bg-razerDark border-2 border-razerGreen rounded-full object-cover grayscale group-hover:grayscale-0 transition-all mb-6">
+                        <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Luis Miranda</h3>
+                        <p class="text-gray-500 text-[10px] uppercase font-syncopate">Retro Gaming Developer</p>
+                        <div class="mt-6 flex items-center gap-2 text-razerGreen/40 font-syncopate text-[10px] animate-pulse">
+                            <span>INFO_DETALLADA</span><div class="w-1 h-1 bg-razerGreen rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 h-full w-full bg-razerDark border border-razerGreen/50 p-8 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col justify-center text-center">
+                        <h3 class="font-syncopate text-[10px] text-razerGreen uppercase mb-4">Expediente_Luis</h3>
+                        <p class="text-gray-300 text-[11px] italic mb-6">"Creador de Space Invaders 8-bit. Especialista en recrear mecánicas arcade clásicas bajo entornos web modernos."</p>
+                        <a href="./paginas/pagina4.html" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase text-razerGreen">Jugar Space Invaders</a>
+                    </div>
                 </div>
             </div>
 
-                 <!-- Integrante 5 -->
-              <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
-                data-aos="fade-up">
-                <div
-                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden">
-                    <img src="./src/img/anthony.jpg" alt="Anthony"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
-                </div>
-                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Anthony</h3>
-                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Frontend Integrator</p>
-                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"
-                   Desarrollador de Tres en Raya interactivo. Pon a prueba tu estrategia, anticipa cada movimiento y demuestra tu habilidad en este clásico reinventado."</p>
-
-                <div class="text-center">
-                    <a href="./paginas/pagina5.html"
-                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
-                        Probar Tres en raya
-                    </a>
+            <div class="group h-[450px] [perspective:1000px]" data-aos="fade-up">
+                <div class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                    <div class="absolute inset-0 bg-razerGrey border border-white/10 p-8 rounded-sm flex flex-col items-center justify-center [backface-visibility:hidden]">
+                        <img src="./src/img/anthony.jpg" alt="Anthony" class="w-24 h-24 bg-razerDark border-2 border-razerGreen rounded-full object-cover grayscale group-hover:grayscale-0 transition-all mb-6">
+                        <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Anthony</h3>
+                        <p class="text-gray-500 text-[10px] uppercase font-syncopate">Frontend Integrator</p>
+                        <div class="mt-6 flex items-center gap-2 text-razerGreen/40 font-syncopate text-[10px] animate-pulse">
+                            <span>INFO_DETALLADA</span><div class="w-1 h-1 bg-razerGreen rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 h-full w-full bg-razerDark border border-razerGreen/50 p-8 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col justify-center text-center">
+                        <h3 class="font-syncopate text-[10px] text-razerGreen uppercase mb-4">Expediente_Anthony</h3>
+                        <p class="text-gray-300 text-[11px] italic mb-6">"Desarrollador de Tres en Raya interactivo. Enfocado en la lógica estratégica y el diseño de componentes reactivos."</p>
+                        <a href="./paginas/pagina5.html" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase text-razerGreen">Probar Tres en raya</a>
+                    </div>
                 </div>
             </div>
 
-
-            <!-- Integrante 6 -->
-            <div class="bg-razerGrey border border-white/10 p-8 rounded-sm hover:border-razerGreen/50 transition-all group"
-                data-aos="fade-up" data-aos-delay="500">
-                <div
-                    class="w-24 h-24 bg-razerDark border-2 border-razerGreen mx-auto mb-6 rounded-full overflow-hidden flex items-center justify-center">
-                    <span class="text-gray-500 text-3xl">?</span>
-                </div>
-                <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Integrante 6</h3>
-                <p class="text-center text-gray-500 text-xs uppercase tracking-widest mb-4">Rol del equipo</p>
-                <p class="text-gray-400 text-sm text-center leading-relaxed italic mb-6">"Descripción breve del
-                    integrante y su proyecto correspondiente."</p>
-
-                <div class="text-center">
-                    <a href="./paginas/pagina6.html"
-                        class="hvr-sweep-to-right btn-razer font-syncopate text-xs px-5 py-2 uppercase tracking-widest inline-block text-razerGreen">
-                        Ver Proyecto
-                    </a>
+            <div class="group h-[450px] [perspective:1000px]" data-aos="fade-up" data-aos-delay="500">
+                <div class="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                    <div class="absolute inset-0 bg-razerGrey border border-white/10 p-8 rounded-sm flex flex-col items-center justify-center [backface-visibility:hidden]">
+                        <div class="w-24 h-24 bg-razerDark border-2 border-razerGreen rounded-full flex items-center justify-center mb-6">
+                            <span class="text-gray-500 text-3xl">?</span>
+                        </div>
+                        <h3 class="font-syncopate text-center text-sm mb-2 text-razerGreen">Integrante 6</h3>
+                        <p class="text-gray-500 text-[10px] uppercase font-syncopate">Rol del equipo</p>
+                    </div>
+                    <div class="absolute inset-0 h-full w-full bg-razerDark border border-razerGreen/50 p-8 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col justify-center text-center">
+                        <h3 class="font-syncopate text-[10px] text-razerGreen uppercase mb-4">Expediente_Sexto</h3>
+                        <p class="text-gray-300 text-[11px] italic mb-6">"Descripción breve del integrante y su proyecto correspondiente."</p>
+                        <a href="./paginas/pagina6.html" class="hvr-sweep-to-right btn-razer font-syncopate text-[10px] px-5 py-2 uppercase text-razerGreen">Ver Proyecto</a>
+                    </div>
                 </div>
             </div>
 
@@ -287,12 +216,7 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Inicializar AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-            easing: 'ease-out-back'
-        });
+        AOS.init({ duration: 1000, once: true, easing: 'ease-out-back' });
     </script>
 </body>
 
