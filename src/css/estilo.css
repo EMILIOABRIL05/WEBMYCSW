@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #050505; /* Fondo oscuro */
+    font-family: 'Inter', 'Roboto', sans-serif;
+    min-height: 100vh;
+    display: grid;
+    color: white; /* Letras por defecto blancas */
+}
+
+h2, p {
+    text-align: center;
+}
+
+/* título superior fuera del overlay */
+h1 {
+    text-align: center;
+    color: #44d62c;
+    font-family: 'Syncopate', sans-serif;
+    text-transform: uppercase;
+    margin: 20px 0 0; /* separarlo del borde superior */
+    text-shadow: 0 0 10px rgba(68, 214, 44, 0.5);
+}
+
+body > section {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    grid-gap: 5px;
+    max-width: 310px;
+    margin: 120px auto 0; /* empuja el tablero hacia abajo y centra horizontalmente */
+}
+
+/* Casillas */
+article {
+    background-color: #111111; /* Gris Razer */
+    border-radius: 8px; /* Menos redondeado */
+    border: 1px solid rgba(68, 214, 44, 0.2);
+    cursor: pointer;
+}
+
+article:hover {
+    background-color: #1a1a1a;
+    border-color: #44d62c;
+    box-shadow: 0 0 10px rgba(68, 214, 44, 0.3);
+}
+
+article > p {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 100px; /* Centrado vertical arreglado */
+    font-size: 60px;
+    font-family: 'Syncopate', sans-serif;
+}
+
+/* Letra O (La dejamos blanca para que contraste) */
+p.O {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Letra X (Color verde Razer) */
+p.X {
+    color: #44d62c;
+    text-shadow: 0 0 15px rgba(68, 214, 44, 0.8);
+}   
+
+/*------------ CONTENEDOR DE MENSAJE ------------*/
+
+.contenedor {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(5, 5, 5, 0.85); /* Fondo negro semitransparente */
+    backdrop-filter: blur(4px);
+    display: grid;
+    grid-template-areas: 
+        ". . . . . ."
+        ". . . . . ."
+        ". . titulo titulo . ."
+        ". . boton boton . ."
+        ". . . . . ."
+        ". . . . . ."
+        ". . . . . .";
+    /* display: none; */
+}
+
+.contenedor > h2 {
+    font-size: 40px;
+    grid-area: titulo;
+    color: #44d62c; /* Verde Razer */
+    font-family: 'Syncopate', sans-serif;
+    text-shadow: 0 0 10px rgba(68, 214, 44, 0.5);
+    align-self: center;
+    text-transform: uppercase;
+}
+
+/* Botón de volver a jugar */
+.contenedor > input {
+    grid-area: boton;
+    font-size: 14px;           /* aún más pequeño */
+    font-family: 'Syncopate', sans-serif;
+    text-transform: uppercase;
+    padding: 4px 8px;          /* muy poco relleno */
+    border-radius: 3px;
+    background-color: transparent;
+    color: #44d62c;
+    border: 1px solid #44d62c;
+    cursor: pointer;
+    width: auto;               /* deja que el contenido dicte el ancho */
+    display: inline-block;     /* evita crecer de más */
+}
+
+.contenedor > input:hover {
+    background-color: #44d62c;
+    color: #000000;
+    box-shadow: 0 0 20px rgba(68, 214, 44, 0.6);
+}
+
+@media screen and (min-width:600px) {
+    body > section {
+        grid-template-columns: repeat(3, 150px);
+        grid-template-rows: repeat(3, 150px);
+        grid-gap: 8px;
+        max-width: 466px;
+    }       
+
+    article > p {
+        width: 150px;
+        height: 150px;
+        line-height: 150px;
+        font-size: 90px;
+        padding: 0;
+    }
+}
